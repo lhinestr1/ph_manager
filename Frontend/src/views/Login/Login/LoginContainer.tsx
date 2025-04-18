@@ -35,7 +35,7 @@ const LoginView: React.FC<Props> = ({
                     try {
                         setloading(true);
                         await login(values);
-                        navigate("/", { replace: true });
+                        navigate("/search", { replace: true });
                     } catch (e) {
                         setFormError("Error de autenticación, verifique sus credenciales");
                     } finally {

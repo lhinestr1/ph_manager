@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Car, LogOut } from "lucide-react";
+import { X, Car, LogOut, Settings } from "lucide-react";
 import { HeaderWrapper, Bar, CloseButton, HamburgerButton, HeaderLeft, Logo, NavDesktop, NavMobile, Overlay, Sidebar } from "./styles";
 import { connect } from "react-redux";
 import { PHManagerState } from "../../store";
@@ -24,18 +24,28 @@ const Header: React.FC<Props> = ({
         <>
             <HeaderWrapper>
                 <HeaderLeft>
-                    <HamburgerButton onClick={toggleSidebar} aria-label="Toggle Menu">
-                        <Bar open={isOpen} />
-                        <Bar open={isOpen} />
-                        <Bar open={isOpen} />
-                    </HamburgerButton>
+                    {loggedIn && (
+                        <HamburgerButton onClick={toggleSidebar} aria-label="Toggle Menu">
+                            <Bar open={isOpen} />
+                            <Bar open={isOpen} />
+                            <Bar open={isOpen} />
+                        </HamburgerButton>
+                    )}
+
                     <Logo>Arrecife</Logo>
                 </HeaderLeft>
 
                 {loggedIn && (
                     <NavDesktop>
-                        <a href="#">Buscador de vehiculos</a>
-                        <a href="#">Cerrar sessión</a>
+                        <NavLink to="/search" onClick={toggleSidebar}>
+                            <p>Buscador de vehiculos</p>
+                        </NavLink>
+                        <NavLink to="/admin" onClick={toggleSidebar}>
+                            <p>Administración</p>
+                        </NavLink>
+                        <NavLink to="/logout" onClick={toggleSidebar}>
+                            <p>Cerrar sessión</p>
+                        </NavLink>
                     </NavDesktop>
                 )}
 
@@ -51,6 +61,10 @@ const Header: React.FC<Props> = ({
                             <NavLink to="/search" onClick={toggleSidebar}>
                                 <Car size={28} color="white" />
                                 <p>Buscador de vehiculos</p>
+                            </NavLink>
+                            <NavLink to="/admin" onClick={toggleSidebar}>
+                                <Settings size={28} color="white" />
+                                <p>Administración</p>
                             </NavLink>
                             <NavLink to="/logout" onClick={toggleSidebar}>
                                 <LogOut size={28} color="white" />

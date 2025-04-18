@@ -6,6 +6,7 @@ const FormGroup = styled.div`
   margin-bottom: 16px;
   color: #083863;
   text-align: left;
+  width: 100%;
 `;
 
 export default FormGroup;

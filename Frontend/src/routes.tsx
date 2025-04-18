@@ -5,14 +5,15 @@ import LoginView from './views/Login/Login/LoginContainer';
 import LogOut from './views/LogOut';
 import { Search } from './views/Search';
 import PrivateRoute from './PrivateRoute';
+import Admin from './views/Admin/Admin';
 
 const AppRoutes = () => (
     <Routes>
         <Route 
-            path='/' 
+            path='/admin' 
             element={
                 <PrivateRoute>
-                    <div>Bienvenido a HPManager</div>
+                    <Admin />
                 </PrivateRoute>
             }
         />
@@ -24,11 +25,8 @@ const AppRoutes = () => (
                 </PrivateRoute>
             }
         />
-        {/*<PrivateRoute2 Component={Search} path='/search' />*/}
         <Route path="/login" >
             <Route index element={<LoginView />} />
-            {/*<Route path="recovery" element={<ResetPasswordView />} />*/}
-            {/*<Route path="register" element={<RegisterView />} />*/}
         </Route>
         <Route path="/logout" element={<LogOut />} />
         <Route path="/not-found" element={<NotFound />} />

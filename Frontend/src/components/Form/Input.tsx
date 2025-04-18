@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 
 export const InputCSS = css<{ $invalid?: boolean; $empty?: boolean }>`
   box-sizing: border-box;
+  width: 100%;
   height:37px;
   border: 0;
   border-radius: 6px;

@@ -32,7 +32,8 @@ export const Search = () => {
         onSubmit={submitTrap(async (values, _, setFormError) => {
           try {
             setloading(true);
-            const response = await vehicleGet({ plate: values.search });
+            setVehicle(null);
+            const response = await vehicleGet({ plate: values.search.toUpperCase() });
             setVehicle(response.payload);
           } catch (error) {
             if (error instanceof ApiError) {
@@ -51,7 +52,7 @@ export const Search = () => {
           </Styled.Container>
         </Form>
       </Formik>
-      <div style={{ marginTop: 20 }}>
+      <div style={{ marginTop: 40, padding: 10 }}>
         {vehicle ? <SearchDetail data={vehicle} /> : <Empty />}
       </div>
     </div>

@@ -13,7 +13,7 @@ export const fadeIn = keyframes`
 `;
 
 export const Background = styled.div`
-  min-height: 100vh;
+  min-height: calc(100% - 50px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +34,7 @@ export const StyledCard = styled.div`
   animation: ${fadeIn} 0.6s ease-in-out;
 
   @media (max-width: 640px) {
-    height: 100vh;
+    height: 100%;
     border-radius: 0;
     max-width: 100%;
     justify-content: center;

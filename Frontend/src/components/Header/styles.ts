@@ -6,12 +6,14 @@ export const fadeIn = keyframes`
 `;
 
 export const HeaderWrapper = styled.header`
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #1f2937;
   color: white;
   padding: 0px 1rem;
+  height: 50px;
 `;
 
 export const HeaderLeft = styled.div`
