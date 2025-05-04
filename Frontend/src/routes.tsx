@@ -6,25 +6,16 @@ import LogOut from './views/LogOut';
 import { Search } from './views/Search';
 import PrivateRoute from './PrivateRoute';
 import Admin from './views/Admin/Admin';
+import AdminApartment from './views/AdminApartment/AdminApartment';
 
 const AppRoutes = () => (
     <Routes>
-        <Route 
-            path='/admin' 
-            element={
-                <PrivateRoute>
-                    <Admin />
-                </PrivateRoute>
-            }
-        />
-        <Route 
-            path='/search' 
-            element={
-                <PrivateRoute>
-                    <Search />
-                </PrivateRoute>
-            }
-        />
+        <Route element={<PrivateRoute/>}>
+            <Route path="/" element={<div>Home</div>} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="admin/apartment/:apartmentId" element={<AdminApartment />} />
+        </Route>
         <Route path="/login" >
             <Route index element={<LoginView />} />
         </Route>

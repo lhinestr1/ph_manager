@@ -11,7 +11,7 @@ const Row = styled.div<Props>`
   flex-direction: row;
   gap: ${props => (props.$gap ? `${props.$gap}px` : '0')};
   //flex-grow: ${props => (props.$fluid ? 1 : 0)};
-  //justify-content: ${props => (props.$center ? 'center' : 'left')};
+  justify-content: ${props => (props.$center ? 'center' : 'left')};
 `;
 
 export default Row;

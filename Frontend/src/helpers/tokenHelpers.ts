@@ -43,6 +43,7 @@ export function isTokenValid(token: string) {
   return false;
 }
 
+//milliseconds
 export function remainingExpTime(exp: number) {
   return Math.max(0, exp * 1000 - Date.now());
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Alert, Card, Flex } from 'antd';
-import { Response } from '../../services/vehicleGet';
+import { Response } from '../../services/vehiclePlateGet';
 
 const actions: React.ReactNode[] = [
     <EditOutlined key="edit" onClick={() => alert("Prueba")} />,
@@ -14,33 +14,35 @@ interface Props {
 }
 
 export const SearchDetail: React.FC<Props> = ({
-    data: { apartment_number, building_name, is_in_arrears, plate, vehicle_type, brand, model, color }
+    data: { apartmentInfo, vehicleInfo, tenants }
 }) => {
 
-    const aptoName = `${building_name} apto ${apartment_number}`;
+    const aptoName = `${apartmentInfo.buildingName} apto ${apartmentInfo.number}`;
 
-    return (
+    return (    
         <Flex gap="middle" align="center" vertical>
             <Card style={{ width: '100%', minWidth: 300 }}>
                 <Card.Meta
-                    title={plate}
+                    title={vehicleInfo.plate}
                     description={
-                        <>
+                        <div>
                             <p>{aptoName}</p>
-                            <p>Luis Javier Hinestroza Cepeda</p>
-                            <p>Tipo de vihiculo: {vehicle_type}</p>
-                            <p>Marca: {brand}</p>
-                            <p>Modelo: {model}</p>
-                            <p>Color: {color}</p>
-                            <p>
-                                <Alert
-                                    type={is_in_arrears ? 'error' : 'success'}
-                                    message={`Estado de cuenta: ${is_in_arrears ? "En mora" : "Al dia"}`}
-                                    description={is_in_arrears ? `${aptoName}  tiene un saldo pendiente, favor acercarse a administraccion.` : "El vehiculo puede ingresar."}
-                                    showIcon
-                                />
-                            </p>
-                        </>
+                            {
+                                tenants.map( (name: string) => (
+                                    <p>{ name }</p>
+                                ))
+                            }
+                            <p>Tipo de vihiculo: {vehicleInfo.vehicleType}</p>
+                            <p>Marca: {vehicleInfo.brand}</p>
+                            <p>Modelo: {vehicleInfo.model}</p>
+                            <p>Color: {vehicleInfo.color}</p>
+                            <Alert
+                                type={apartmentInfo.isInArrears ? 'error' : 'success'}
+                                message={`Estado de cuenta: ${apartmentInfo.isInArrears ? "En mora" : "Al dia"}`}
+                                description={apartmentInfo.isInArrears ? `${aptoName}  tiene un saldo pendiente, favor acercarse a administraccion.` : "El vehiculo puede ingresar."}
+                                showIcon
+                            />
+                        </div>
                     }
                 />
             </Card>

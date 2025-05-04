@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import InputSelect from '../../../components/Form/InputSelect'
 import { Formik } from 'formik'
 import { IApartment, IBuilding, IOptionSelector } from '../../../types/common';
-import buildingGet, { Response } from '../../../services/buildingGet';
-import FormChange from '../../../components/Form/FormChange';
+import buildingGet from '../../../services/buildingGet';
 import apartmentsGet from '../../../services/apartmentsGet';
 import { Button, List } from 'antd';
 import InputGroup from '../../../components/Form/InputGroup';
@@ -12,8 +11,12 @@ import ValidationSchema from './ValidationSchema';
 import { apartmentsPost } from '../../../services/apartmentPost';
 import Form from '../../../components/Form/Form';
 import { submitTrap } from '../../../helpers/formHelpers';
-import { B } from 'ts-toolbelt';
-import { Settings, SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
+import { Pagination } from '../../../components/Pagination';
+import { IPagination } from '../../../components/Pagination/Pagination';
+import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { PHManagerState } from '../../../store';
 
 export interface IFormValues {
     building: string;
@@ -24,20 +27,45 @@ const initialValues: IFormValues = {
     apto: ''
 }
 
-export const Apartments = () => {
+interface Props {
+    buildingsSelector: IOptionSelector[]
+}
+const ApartmentsView: React.FC<Props> = ({
+    buildingsSelector
+}) => {
+    const navigate = useNavigate();
     const [apartments, setApartments] = useState<IApartment[]>([]);
-    const [buildingOptions, setBuildingOptions] = useState<IOptionSelector[]>([]);
     const [buildingSelected, setBuildingSelected] = useState<string | null>(null);
+    const [pagination, setPagination] = useState<IPagination>({
+        currentPage: 1,
+        pageSize: 0,
+        pages: 0,
+        total: 0
+    });
 
-    const getApartments = async () => {
+    const navigateAdminApartment = (id: string, numberApartment: string) => {
+        navigate(`/admin/apartment/${id}`, { state: { building: buildingSelected, apto: numberApartment, id } });
+    };
+
+    const handlerSetBuildingSelected = (value: string | null) => {
+        setBuildingSelected(value);
+    }
+
+    const getApartments = async (currentPage: number) => {
         try {
             setApartments([]);
             if (!buildingSelected) return;
-            const { payload } = await apartmentsGet({ building_id: buildingSelected });
-            payload.sort((a: IApartment, b: IApartment) => {
-                return a.number.localeCompare(b.number, undefined, { numeric: true });
+            const { payload: { items, ...paginationServer } } = await apartmentsGet({ building_id: buildingSelected })({
+                page: currentPage,
+                size: 50
             });
-            setApartments(payload);
+            setPagination({
+                currentPage: paginationServer.page,
+                pages: paginationServer.pages,
+                pageSize: paginationServer.size,
+                total: paginationServer.total
+            });
+            setApartments(items);
         } catch (error) {
             console.error('Error fetching apartments:', error);
         }
@@ -45,23 +73,9 @@ export const Apartments = () => {
 
     useEffect(() => {
         (async () => {
-            await getApartments();
+            await getApartments(1);
         })()
-    }, [buildingSelected])
-
-
-    useEffect(() => {
-        (async () => {
-            const { payload } = await buildingGet();
-            payload.sort((a: IBuilding, b: IBuilding) => {
-                return a.name.localeCompare(b.name, undefined, { numeric: true });
-            });
-            setBuildingOptions(payload.map((building: Response) => ({
-                label: building.name,
-                value: building.id,
-            })));
-        })()
-    }, [])
+    }, [buildingSelected]);
 
     return (
         <div style={{ padding: '15px' }}>
@@ -75,7 +89,7 @@ export const Apartments = () => {
                         });
                         form.setFieldValue('apto', '');
                         form.setFieldTouched('apto', false);
-                        await getApartments();
+                        await getApartments(pagination.currentPage);
                     } catch (error) {
                         setFormError('error to create apartment');
                     }
@@ -83,12 +97,14 @@ export const Apartments = () => {
                 validationSchema={ValidationSchema}
             >
                 <Form autoComplete='off'>
-                    <FormChange onChange={({ building }) => setBuildingSelected(building)} />
-                    <Row gap={5} >
+                    <Row $gap={5} >
                         <InputSelect
-                            placeholder='Seleccione...'
+                            placeholder='Seleccione'
                             name='building'
-                            options={buildingOptions} />
+                            options={buildingsSelector}
+                            onChange={(value: string) => handlerSetBuildingSelected(value)}
+                        />
+
                         <InputGroup name='apto' placeholder='Número de apto' />
                         <Button
                             type='primary'
@@ -107,16 +123,39 @@ export const Apartments = () => {
                     <List.Item key={item.id}>
                         <List.Item.Meta
                             description={`Apto ${item.number}`}
-                        //description={`Apto ${item.number}`} 
                         />
                         <Button
                             title='Eliminar'
                             type='link'
-                        ><SlidersHorizontal /></Button>
+                            onClick={() => navigateAdminApartment(item.id, item.number)}
+                        >
+                            <SlidersHorizontal />
+                        </Button>
+
                     </List.Item>
                 )}
             />
+            {pagination.total > 0 && (
+                <Row $center style={{ marginTop: '5px' }}>
+                    <Pagination
+                        currentPage={pagination.currentPage}
+                        pageSize={pagination.pageSize}
+                        pages={pagination.pages}
+                        total={pagination.total}
+                        onPageChange={async (page) => await getApartments(page)}
+                    />
+                </Row>
+            )}
         </div>
 
     )
 }
+
+export default connect(
+    (state: PHManagerState) => ({
+        buildingsSelector: state.buildings.map(item => ({
+            label: item.name,
+            value: item.id
+        }))
+    })
+)(ApartmentsView)

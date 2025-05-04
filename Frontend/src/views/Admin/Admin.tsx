@@ -2,10 +2,10 @@ import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import { Buildings } from './Buildings';
-import { Apartments } from './Apartments';
+import { ApartmentsView } from './Apartments';
 
 const onChange = (key: string) => {
-  console.log(key);
+  //console.log(key);
 };
 
 const items: TabsProps['items'] = [
@@ -17,7 +17,7 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: 'Apartamentos',
-    children: <Apartments />,
+    children: <ApartmentsView />,
   }
 ];
 

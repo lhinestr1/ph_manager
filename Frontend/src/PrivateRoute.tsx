@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate , Outlet } from 'react-router-dom';
 import { PHManagerState } from './store';
+import readySelector from './store/selectors/readySelector';
 
 interface Props {
   loggedIn: boolean
@@ -14,12 +15,17 @@ const PrivateRoute: React.FC<Props> = ({
 }) => {
 
   const navigate = useNavigate();
+  const isReady = useSelector(readySelector); 
 
   useEffect(() => {
     if (!loggedIn) {
       navigate("/login", { replace: true });
     }
   }, [loggedIn, navigate]);
+
+  if(!isReady){
+    return <div>Loading...</div>
+  }
 
   return children ? children : <Outlet />;
 };

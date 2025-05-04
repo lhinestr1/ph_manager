@@ -5,7 +5,7 @@ import InputGroup from '../../components/Form/InputGroup';
 import validationSchema from './ValidationSchema';
 import * as Styled from './styles'
 import { submitTrap } from '../../helpers/formHelpers';
-import vehicleGet, { Response } from '../../services/vehicleGet';
+import vehicleGet, { Response } from '../../services/vehiclePlateGet';
 import { Button, Empty } from "antd";
 import ApiError from '../../types/ApiError';
 import FormError from '../../components/Form/FormError';

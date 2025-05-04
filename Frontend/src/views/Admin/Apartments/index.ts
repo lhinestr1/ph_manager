@@ -1,3 +1,5 @@
+import ApartmentsView from './Apartments'
+
 export {
-    Apartments
-} from './Apartments'
+    ApartmentsView
+}

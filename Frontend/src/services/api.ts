@@ -30,8 +30,6 @@ export const httpMethod = (apiUrl: string) => async (
     }
   }
 
-  console.log(authentication);
-
   if (method === 'get') query = true;
 
   const options: RequestInit = {
