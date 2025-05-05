@@ -1,15 +1,12 @@
+import { IVehicle } from '../types/common';
 import serviceBuilder from './serviceBuilder';
 
-export interface Response {
-
-}
-
 interface Params {
-    apartment_number: string
+    apartment_id: string
 }
 
-export const url = 'apartments/:apartment_number/vehicles';
-export default serviceBuilder<Params, Response>('get', {
+export const url = 'apartments/:apartment_id/vehicles';
+export default serviceBuilder<Params, IVehicle[]>('get', {
     url,
     auth: true,
 });

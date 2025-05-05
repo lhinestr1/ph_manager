@@ -10,16 +10,15 @@ const Main = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
 `;
 
 const Content = styled.div`
   display: flex;
-  flex-grow: 1;
-
-  > div {
-    max-width: 100%;
-    flex-grow: 1;
-  }
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 10px;
 `;
 
 export default function App() {

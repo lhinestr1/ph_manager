@@ -47,7 +47,7 @@ export const Search = () => {
         <Form autoComplete='off'>
           <Styled.Container>
             <InputGroup name="search" placeholder="Ingrese placa" />
-            <Button loading={loading} htmlType='submit' type='primary' style={{ backgroundColor: "#1f2937" }}>Buscar</Button>
+            <Button loading={loading} htmlType='submit' className='btn' type='primary' style={{ backgroundColor: "#1f2937" }}>Buscar</Button>
             <FormError />
           </Styled.Container>
         </Form>

@@ -117,7 +117,7 @@ const ApartmentsView: React.FC<Props> = ({
                 </Form>
             </Formik>
             <List
-                style={{ maxHeight: '72vh', overflowY: 'auto' }}
+                style={{ maxHeight: '70vh', overflowY: 'auto' }}
                 dataSource={apartments}
                 renderItem={(item) => (
                     <List.Item key={item.id}>
@@ -136,7 +136,7 @@ const ApartmentsView: React.FC<Props> = ({
                 )}
             />
             {pagination.total > 0 && (
-                <Row $center style={{ marginTop: '5px' }}>
+                <Row $justifyContent='center' style={{ marginTop: '5px', padding: '10px' }}>
                     <Pagination
                         currentPage={pagination.currentPage}
                         pageSize={pagination.pageSize}

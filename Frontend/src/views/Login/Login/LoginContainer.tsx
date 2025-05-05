@@ -50,7 +50,7 @@ const LoginView: React.FC<Props> = ({
                         <InputGroup name="email" label="Correo electronico" placeholder="Ingrese correo electronico" />
                         <InputGroup name="password" type="password" label="Contraseña" placeholder="Ingrese contraseña" />
                         <FormError />
-                        <Button htmlType="submit" type="primary" loading={loading} style={{ backgroundColor: "#1f2937", height: 37 }}>
+                        <Button htmlType="submit" className="btn" type="primary" loading={loading} style={{ backgroundColor: "#1f2937", height: 37 }}>
                             Iniciar Sesión
                         </Button>
                     </Form>

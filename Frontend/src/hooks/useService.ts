@@ -1,6 +1,7 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
 import { useCallback, useState } from 'react';
 import { Service, ServiceError, ServiceLoaded } from '../types/Service';
+import ApiError from '../types/ApiError';
 
 function useService<P, R>(
   service: () => Promise<ServiceLoaded<R>>
@@ -26,6 +27,16 @@ function useService<P, R, E>(service: (params: P) => Promise<any>) {
         setState(result);
         return result;
       } catch (e) {
+        if(e instanceof ApiError) {
+          setState({
+            status: 'error',
+            error: e,
+            payload: e.payload,
+          });
+        }
+        setTimeout(() => {
+          setState({ status: 'init' });
+        }, 3000);
         throw e;
       }
     },

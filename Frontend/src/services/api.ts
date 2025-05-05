@@ -3,7 +3,7 @@ import { readToken } from '../helpers/tokenHelpers';
 import ApiError from '../types/ApiError';
 import API_URL from './API_URL';
 
-export type Method = 'get' | 'post' | 'put' | 'patch';
+export type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export const httpMethod = (apiUrl: string) => async (
   method: Method,
