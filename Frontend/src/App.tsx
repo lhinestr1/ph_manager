@@ -15,10 +15,15 @@ const Main = styled.div`
 
 const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-  padding: 10px;
+  flex-grow: 1;
+  justify-content: center;
+  > div {
+    max-width: 100%;
+    max-width: 500px;
+    flex-grow: 1; 
+    padding: 10px;
+    margin-top: 20px;
+  }
 `;
 
 export default function App() {

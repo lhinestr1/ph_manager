@@ -14,7 +14,7 @@ import { submitTrap } from '../../../helpers/formHelpers';
 import { SlidersHorizontal } from 'lucide-react';
 import { Pagination } from '../../../components/Pagination';
 import { IPagination } from '../../../components/Pagination/Pagination';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PHManagerState } from '../../../store';
 
@@ -42,6 +42,7 @@ const ApartmentsView: React.FC<Props> = ({
         pages: 0,
         total: 0
     });
+    const [params] = useSearchParams();
 
     const navigateAdminApartment = (id: string, numberApartment: string) => {
         navigate(`/admin/apartment/${id}`, { state: { building: buildingSelected, apto: numberApartment, id } });
@@ -77,10 +78,20 @@ const ApartmentsView: React.FC<Props> = ({
         })()
     }, [buildingSelected]);
 
+    useEffect(() => {
+        const buildingPreselected = params.get('buildingId') as string || null;
+        if(buildingPreselected){
+            setBuildingSelected(buildingPreselected);
+        }
+    }, []);
+
     return (
         <div style={{ padding: '15px' }}>
             <Formik
-                initialValues={initialValues}
+                initialValues={{
+                    ...initialValues,
+                    building: params.get('buildingId') || initialValues.building,
+                }}
                 onSubmit={submitTrap(async (values, form, setFormError) => {
                     try {
                         await apartmentsPost({
@@ -99,25 +110,25 @@ const ApartmentsView: React.FC<Props> = ({
                 <Form autoComplete='off'>
                     <Row $gap={5} >
                         <InputSelect
-                            placeholder='Seleccione'
+                            placeholder='Seleccione torre'
                             name='building'
                             options={buildingsSelector}
                             onChange={(value: string) => handlerSetBuildingSelected(value)}
                         />
 
-                        <InputGroup name='apto' placeholder='Número de apto' />
+                        {/*<InputGroup name='apto' placeholder='Número de apto' />
                         <Button
                             type='primary'
                             htmlType='submit'
                             style={{ marginLeft: '10px', height: '37px', backgroundColor: "#1f2937" }}
                         >
                             Guardar
-                        </Button>
+                        </Button>*/}
                     </Row>
                 </Form>
             </Formik>
             <List
-                style={{ maxHeight: '70vh', overflowY: 'auto' }}
+                style={{ maxHeight: '71vh', overflowY: 'auto', marginTop: '20px' }}
                 dataSource={apartments}
                 renderItem={(item) => (
                     <List.Item key={item.id}>

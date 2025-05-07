@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import backgroundImage from "../../../images/arrecife.png";
+//import backgroundImage from "../../../images/arrecife.png";
 
 export const fadeIn = keyframes`
   from {
@@ -13,19 +13,23 @@ export const fadeIn = keyframes`
 `;
 
 export const Background = styled.div`
+  padding: 0px !important;
   min-height: calc(100% - 50px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(${backgroundImage});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  ${/**
+    //background-image: url(${backgroundImage});
+  //background-repeat: no-repeat;
+  //background-size: cover;
+  //background-position: center;
+    */''}
+  
 `;
 
 export const StyledCard = styled.div`
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
   padding: 1.5rem;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);

@@ -26,16 +26,21 @@ export const ListVehicles: React.FC<Props> = ({
         <div>
             <Styled.Title>
                 <div>Lista de vehiculos</div>
-                <NavLink to={`/admin/apartment/${idApartment}/create-vehicle`}>
-                    <Button 
-                        size='small' 
-                        title='Agregar nuevo vehiculo' 
-                        type="primary" 
-                        className='addBtn' 
-                        shape="circle" 
-                        icon={<PlusOutlined />} 
-                    />
-                </NavLink>
+                {
+                    vehicles.length < 2 && (
+                        <NavLink to={`/admin/apartment/${idApartment}/create-vehicle`}>
+                            <Button
+                                size='small'
+                                title='Agregar nuevo vehiculo'
+                                type="primary"
+                                className='addBtn'
+                                shape="circle"
+                                disabled={loading || vehicles.length >= 2}
+                                icon={<PlusOutlined />}
+                            />
+                        </NavLink>
+                    )
+                }
             </Styled.Title>
             <Styled.ContainerList>
                 {vehicles.length === 0 ?

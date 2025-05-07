@@ -15,8 +15,10 @@ export interface IApartment {
     id: string,
     number: string,
     buildingName: string,
+    buildingId: string,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    isInArrears: boolean,
 }
 
 export interface IVehicle {

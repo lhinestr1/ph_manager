@@ -1,5 +1,5 @@
 import { Formik } from 'formik'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { vehiclePost as vehiclePostService, Params } from '../../../services/vehiclePost'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import InputGroup from '../../../components/Form/InputGroup'
@@ -9,11 +9,15 @@ import ValidationSchema from './ValidationSchema'
 import InputSelect from '../../../components/Form/InputSelect'
 import FormGroup from '../../../components/Form/FormGroup'
 import Label from '../../../components/Form/Label'
-import { vehicleTypes } from '../../../types/common'
+import { IApartment, vehicleTypes } from '../../../types/common'
 import useService from '../../../hooks/useService'
 import { Alert } from '../../../components/UI/Alert'
 import Row from '../../../components/Grid/Row'
 import * as Styled from './styles'
+import { InitialApartmentSelected } from '../AdminApartment'
+import { useServiceStatus } from '../../../hooks/useServiceStatus'
+import apartmentGet from '../../../services/apartmentGet'
+import ApiError from '../../../types/ApiError'
 
 const initialValues: Params = {
     vehicleType: '',
@@ -28,8 +32,34 @@ const options = vehicleTypes.map((item: string) => ({ label: item, value: item }
 
 export const CreateVehicle = () => {
     const [vehiclePostStatus, vehiclePost] = useService(vehiclePostService);
+    const [apartmentSelected, setApartmentSelected] = useState<IApartment>(InitialApartmentSelected);
     const { apartmentId } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [serviceStatus, setServiceStatus] = useServiceStatus({
+        status: 'init'
+    });
+
+    const handlerGetApartment = async () => {
+        try {
+            setServiceStatus({
+                status: 'loading'
+            })
+            const { payload } = await apartmentGet({
+                apartment_id: apartmentId ?? ""
+            });
+            setApartmentSelected(payload);
+            setServiceStatus({
+                status: 'init'
+            });
+        } catch (e) {
+            if (e instanceof ApiError) {
+                setServiceStatus({
+                    status: 'error',
+                    error: e
+                });
+            }
+        }
+    }
 
     useEffect(() => {
         if (vehiclePostStatus.status === 'loaded') {
@@ -37,14 +67,20 @@ export const CreateVehicle = () => {
         }
     });
 
+    useEffect(() => {
+        handlerGetApartment()
+    }, [])
+
     const handleCancel = () => {
         navigate(`/admin/apartment/${apartmentId}`)
     }
 
     return (
         <Styled.Container>
-            <Row $justifyContent='center' className='title'>
-                Torre XX APTO XXXX
+            <Row $justifyContent='center'>
+                <span className='nameApto title'>
+                    {`${apartmentSelected?.buildingName} APTO ${apartmentSelected?.number}`}
+                </span>
             </Row>
             <Formik
                 validationSchema={ValidationSchema}
@@ -55,8 +91,7 @@ export const CreateVehicle = () => {
                     } catch (error) { }
                 }}
             >
-                <Form className='form'>
-
+                <Form className='form' autoComplete='off'>
                     <FormGroup>
                         <Label>Tipo de vehiculo*</Label>
                         <InputSelect name='vehicleType' placeholder='Seleccione' options={options} />

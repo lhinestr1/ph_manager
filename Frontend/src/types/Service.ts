@@ -19,7 +19,7 @@ export interface ServiceLoaded<T = any> {
 export interface ServiceError<E = any> {
   status: 'error';
   error: ApiError<E>;
-  payload: E;
+  payload?: E;
 }
 
 export type Service<T = None, E = any> =
