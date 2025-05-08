@@ -30,7 +30,7 @@ export const Background = styled.div`
 export const StyledCard = styled.div`
   width: 100%;
   max-width: 350px;
-  padding: 1.5rem;
+  padding: 3rem 1.5rem;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);

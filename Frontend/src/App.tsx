@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from "./store";
 import Header from "./components/Header/Header";
 import styled from "styled-components";
+import { ConfigProvider } from 'antd';
 
 const Main = styled.div`
   min-height: 100vh;
@@ -22,21 +23,29 @@ const Content = styled.div`
     max-width: 500px;
     flex-grow: 1; 
     padding: 10px;
-    margin-top: 20px;
   }
 `;
 
 export default function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter basename={"/"}>
-        <Main>
-          <Header />
-          <Content>
-            <Routes />
-          </Content>
-        </Main>
-      </BrowserRouter>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#1f2937',
+            },
+          }}
+        >
+          <BrowserRouter basename={"/"}>
+            <Main>
+              <Header />
+              <Content>
+                <Routes />
+              </Content>
+            </Main>
+          </BrowserRouter>
+        </ConfigProvider>
+
     </Provider>
   );
 }

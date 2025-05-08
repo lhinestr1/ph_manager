@@ -22,8 +22,6 @@ const items: TabsProps['items'] = [
 ];
 
 const Admin: React.FC = () => 
-  <div style={{ padding: '5px' }}>
     <Tabs defaultActiveKey="2" items={items} onChange={onChange} />
-  </div>;
 
 export default Admin;

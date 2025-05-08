@@ -13,6 +13,8 @@ import { submitTrap } from "../../../helpers/formHelpers";
 import FormError from "../../../components/Form/FormError";
 import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
+import Row from "../../../components/Grid/Row";
+import Logo from "../../../images/logoarrecife.png"
 
 interface Props {
     loggedIn: boolean;
@@ -47,7 +49,10 @@ const LoginView: React.FC<Props> = ({
                 <Styled.StyledCard>
                     <Form autoComplete="off">
                         <Styled.Title>Iniciar Sesión</Styled.Title>
-                        <InputGroup name="email" label="Correo electronico" placeholder="Ingrese correo electronico" />
+                        <Row $justifyContent="center" $alignItems="center" style={{ marginBottom: "20px" }}>
+                            <img src={Logo} alt="Logo" style={{ width: "100px", height: "120px"}} />
+                        </Row>
+                        <InputGroup name="email" label="Correo electronico" placeholder="Ingrese correo electronico" autoFocus />
                         <InputGroup name="password" type="password" label="Contraseña" placeholder="Ingrese contraseña" />
                         <FormError />
                         <Button htmlType="submit" className="btn" type="primary" loading={loading} style={{ backgroundColor: "#1f2937", height: 37 }}>

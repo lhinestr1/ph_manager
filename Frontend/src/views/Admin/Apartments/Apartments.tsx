@@ -11,7 +11,7 @@ import ValidationSchema from './ValidationSchema';
 import { apartmentsPost } from '../../../services/apartmentPost';
 import Form from '../../../components/Form/Form';
 import { submitTrap } from '../../../helpers/formHelpers';
-import { SlidersHorizontal } from 'lucide-react';
+import { Settings } from 'lucide-react';
 import { Pagination } from '../../../components/Pagination';
 import { IPagination } from '../../../components/Pagination/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -128,7 +128,7 @@ const ApartmentsView: React.FC<Props> = ({
                 </Form>
             </Formik>
             <List
-                style={{ maxHeight: '71vh', overflowY: 'auto', marginTop: '20px' }}
+                style={{ maxHeight: 'calc(100vh - 270px)', overflowY: 'auto', marginTop: '20px' }}
                 dataSource={apartments}
                 renderItem={(item) => (
                     <List.Item key={item.id}>
@@ -136,11 +136,11 @@ const ApartmentsView: React.FC<Props> = ({
                             description={`Apto ${item.number}`}
                         />
                         <Button
-                            title='Eliminar'
+                            title='Editar'
                             type='link'
                             onClick={() => navigateAdminApartment(item.id, item.number)}
                         >
-                            <SlidersHorizontal />
+                            <Settings color='#1f2937' />
                         </Button>
 
                     </List.Item>

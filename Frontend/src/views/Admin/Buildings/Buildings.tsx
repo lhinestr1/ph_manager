@@ -13,7 +13,7 @@ const BuildingsView: React.FC<Props> = ({
     return (
         <div style={{ padding: '15px' }}>
             <List
-                style={{ maxHeight: '80vh', overflowY: 'auto' }}
+                style={{ maxHeight: 'calc(100vh - 170px)', overflowY: 'auto' }}
                 dataSource={buildings}
                 renderItem={(item) => (
                     <List.Item>

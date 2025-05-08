@@ -16,10 +16,28 @@ export const HeaderWrapper = styled.header`
   height: 50px;
 `;
 
-export const HeaderLeft = styled.div`
+export const HeaderLeft = styled.div<{ $loggedIn: boolean }>`
   display: flex;
   align-items: center;
   gap: 1rem;
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logoimg {
+    width: 30px;
+    height: 30px;
+  }
+
+  @media (max-width: 768px) {
+
+    ${({ $loggedIn }) => $loggedIn && `
+      .logoimg {
+        display: none;
+      }`
+    };
+  }
 `;
 
 export const Logo = styled.h1`

@@ -4,7 +4,7 @@ import { HeaderWrapper, Bar, CloseButton, HamburgerButton, HeaderLeft, Logo, Nav
 import { connect } from "react-redux";
 import { PHManagerState } from "../../store";
 import { NavLink } from "react-router-dom";
-
+import LogoImg from "../../images/logoarrecife.png"
 
 
 interface Props {
@@ -23,7 +23,7 @@ const Header: React.FC<Props> = ({
     return (
         <>
             <HeaderWrapper>
-                <HeaderLeft>
+                <HeaderLeft $loggedIn={loggedIn}>
                     {loggedIn && (
                         <HamburgerButton onClick={toggleSidebar} aria-label="Toggle Menu">
                             <Bar open={isOpen} />
@@ -31,8 +31,10 @@ const Header: React.FC<Props> = ({
                             <Bar open={isOpen} />
                         </HamburgerButton>
                     )}
-
-                    <Logo>Arrecife</Logo>
+                    <div className="logoContainer">
+                        { loggedIn && <img src={LogoImg} alt="Logo" className="logoimg"/> }
+                        <Logo>Arrecife</Logo>
+                    </div>
                 </HeaderLeft>
 
                 {loggedIn && (
