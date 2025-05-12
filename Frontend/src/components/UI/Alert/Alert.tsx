@@ -13,7 +13,7 @@ const AlertComponentStyles = styled.div`
     position: absolute; 
     bottom: 10px;
     left: 0;
-    z-index: 1000;
+    z-index: 10000;
     padding: 10px; 
     box-sizing: border-box;
 `;

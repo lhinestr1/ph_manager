@@ -7,19 +7,24 @@ import * as Styled from './styles'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { N } from 'ts-toolbelt';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { ModalC, useModalC } from '../../../components/UI/Modal';
+import { CreateVehicle } from '../CreateVehicle';
+import { isDataView } from 'util/types';
 
 interface Props {
     vehicles: IVehicle[];
     loading: boolean;
     deleteVehicle: (id: string) => Promise<void>;
     idApartment: string;
+    openModalCreate: () => Promise<void>;
 }
 
 export const ListVehicles: React.FC<Props> = ({
     vehicles,
     loading,
     deleteVehicle,
-    idApartment
+    idApartment,
+    openModalCreate
 }) => {
 
     return (
@@ -28,7 +33,7 @@ export const ListVehicles: React.FC<Props> = ({
                 <div>Lista de vehiculos</div>
                 {
                     vehicles.length < 2 && (
-                        <NavLink to={`/admin/apartment/${idApartment}/create-vehicle`}>
+                        
                             <Button
                                 size='small'
                                 title='Agregar nuevo vehiculo'
@@ -36,9 +41,9 @@ export const ListVehicles: React.FC<Props> = ({
                                 className='addBtn'
                                 shape="circle"
                                 disabled={loading || vehicles.length >= 2}
+                                onClick={openModalCreate}
                                 icon={<PlusOutlined />}
                             />
-                        </NavLink>
                     )
                 }
             </Styled.Title>

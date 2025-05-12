@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import Row from '../../components/Grid/Row';
@@ -15,6 +15,9 @@ import apartmentGet from '../../services/apartmentGet';
 import { useServiceStatus } from '../../hooks/useServiceStatus';
 import ApiError from '../../types/ApiError';
 import apartmentStatusPut from '../../services/apartmentStatusPut';
+import { ModalC, useModalC } from '../../components/UI/Modal';
+import { CreateVehicle } from './CreateVehicle';
+import { vehiclePost, Params as ParamsVehiclePost } from '../../services/vehiclePost';
 
 const Container = styled.div`
     .title {
@@ -36,13 +39,14 @@ export const InitialApartmentSelected: IApartment = {
     isInArrears: false,
     number: '',
     updatedAt: '',
-    buildingId: ''
+    buildingId: '',
+    ownerName: ''
 }
 
 const AdminApartment: React.FC<Props> = ({
     buildings
 }) => {
-
+    const [modal, openModal] = useModalC();
     const [vehicles, setVehicles] = useState<IVehicle[]>([]);
     const [apartmentSelected, setApartmentSelected] = useState<IApartment>(InitialApartmentSelected);
     const { apartmentId = '' } = useParams();
@@ -63,6 +67,27 @@ const AdminApartment: React.FC<Props> = ({
             setServiceStatus({
                 status: 'init'
             });
+        } catch (e) {
+            if (e instanceof ApiError) {
+                setServiceStatus({
+                    status: 'error',
+                    error: e
+                });
+            }
+        }
+    }
+
+    const handlerSaveVehicle = async (values: ParamsVehiclePost) => {
+        try {
+            setServiceStatus({
+                status: 'loading'
+            })
+            await vehiclePost(values);
+            modal.close();
+            setServiceStatus({
+                status: 'init'
+            });
+            await handlerGetVehicles();
         } catch (e) {
             if (e instanceof ApiError) {
                 setServiceStatus({
@@ -143,6 +168,19 @@ const AdminApartment: React.FC<Props> = ({
         }
     }
 
+
+    const openModalCreate = async () => {
+        openModal({
+            main: <CreateVehicle
+                apartmentId={apartmentId}
+                vehiclePost={handlerSaveVehicle}
+                loading={serviceStatus.status === 'loading'}
+                cancel={() => modal.close()}
+            />,
+            noClosable: true
+        });
+    }
+
     useEffect(() => {
         (async () => {
             await handlerGetApartment()
@@ -151,13 +189,13 @@ const AdminApartment: React.FC<Props> = ({
     }, []);
 
     const toBack = () => {
-        console.log('toBack ? enviar buildingId por query param');
         navigate(`/admin?buildingId=${apartmentSelected.buildingId}`, { replace: true })
     }
 
 
     return (
         <Container>
+            <ModalC props={modal} />
             <Row $justifyContent='center' className='title'>
                 <Button onClick={toBack} variant='link' shape="round" icon={<ArrowLeftOutlined />} />
                 <span className='nameApto title'>
@@ -179,9 +217,10 @@ const AdminApartment: React.FC<Props> = ({
                     await handlerDeleteVehicle(id);
                     await handlerGetVehicles();
                 }}
+                openModalCreate={openModalCreate}
                 loading={serviceStatus.status === 'loading'} />
             {serviceStatus.status === 'error' &&
-                <Alert message={serviceStatus.error.message} type="error" showIcon />}
+                <Alert message={serviceStatus.error.response.detail} type="error" showIcon />}
         </Container>
     )
 }

@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    .title {
-        font-size: 28px;
-    }
+    width: 300px;
     .form {
-        margin-top: 20px;
+        margin-top: 5px;
     }
 `;
