@@ -1,7 +1,11 @@
 
 export type vehicleType = 'Automóvil' | 'Motocicleta' | '';
 
+export type rolesType = 'Administrador' | 'Propietario' | 'Inquilino' | 'Guardia' | '';
+
 export const vehicleTypes: vehicleType[] = ['Automóvil', 'Motocicleta'];
+
+export const roles = ['Administrador', 'Propietario', 'Guardia', 'Inquilino'];
 
 export interface IBuilding {
     name: string;
@@ -44,4 +48,16 @@ export interface IPaginator<T> {
     pages: number;
     size: number;
     total: number;
+}
+
+export interface IUser {
+    firstName: string,
+    lastName: string,
+    documentNumber: string,
+    mainPhoneNumber: string,
+    secondaryPhoneNumber: string,
+    email: string,
+    role: rolesType,
+    id: string,
+    isActive: boolean
 }

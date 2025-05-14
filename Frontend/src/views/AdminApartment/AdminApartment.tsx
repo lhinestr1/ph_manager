@@ -5,12 +5,12 @@ import Row from '../../components/Grid/Row';
 import apartmentVehicleGet from '../../services/apartmentVehicleGet';
 import { connect } from 'react-redux';
 import { PHManagerState } from '../../store';
-import { IApartment, IBuilding, IVehicle } from '../../types/common';
+import { IApartment, IBuilding, IUser, IVehicle } from '../../types/common';
 import { ListVehicles } from './ListVehicles';
 import { vehicleDelete as vehicleDeleteService } from '../../services/vehicleDelete';
 import { Alert } from '../../components/UI/Alert';
 import { Button, Switch } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons';
 import apartmentGet from '../../services/apartmentGet';
 import { useServiceStatus } from '../../hooks/useServiceStatus';
 import ApiError from '../../types/ApiError';
@@ -18,13 +18,14 @@ import apartmentStatusPut from '../../services/apartmentStatusPut';
 import { ModalC, useModalC } from '../../components/UI/Modal';
 import { CreateVehicle } from './CreateVehicle';
 import { vehiclePost, Params as ParamsVehiclePost } from '../../services/vehiclePost';
+import { CreateUser } from './CreateUser';
+import { usersPost } from '../../services/usersPost';
+import { AssignUser } from './AssignUser';
 
 const Container = styled.div`
-    .title {
-        font-size: 28px;
-    }
     .nameApto {
         margin-left: 10px;
+        font-size: 28px;
     }
 `;
 
@@ -169,7 +170,8 @@ const AdminApartment: React.FC<Props> = ({
     }
 
 
-    const openModalCreate = async () => {
+
+    const openCreateVehicle = async () => {
         openModal({
             main: <CreateVehicle
                 apartmentId={apartmentId}
@@ -178,6 +180,12 @@ const AdminApartment: React.FC<Props> = ({
                 cancel={() => modal.close()}
             />,
             noClosable: true
+        });
+    }
+
+    const openAssignUser = async () => {
+        openModal({
+            main: <AssignUser />,
         });
     }
 
@@ -196,11 +204,23 @@ const AdminApartment: React.FC<Props> = ({
     return (
         <Container>
             <ModalC props={modal} />
-            <Row $justifyContent='center' className='title'>
+            <Row $justifyContent='center' className='nameApto'>
                 <Button onClick={toBack} variant='link' shape="round" icon={<ArrowLeftOutlined />} />
-                <span className='nameApto title'>
+                <span className='nameApto'>
                     {`${apartmentSelected?.buildingName} APTO ${apartmentSelected?.number}`}
                 </span>
+            </Row>
+            <Row $justifyContent='center' $gap={10} className='title' $alignItems='center' style={{ marginTop: '20px' }}>
+                <Button
+                    size='small'
+                    title='Propietario/a'
+                    type="primary"
+                    className='addBtn'
+                    shape="circle"
+                    onClick={openAssignUser}
+                    icon={<UserOutlined />}
+                />
+                {apartmentSelected?.ownerName}
             </Row>
             <Row $gap={10} style={{ marginTop: '20px' }}>
                 <Switch
@@ -217,7 +237,7 @@ const AdminApartment: React.FC<Props> = ({
                     await handlerDeleteVehicle(id);
                     await handlerGetVehicles();
                 }}
-                openModalCreate={openModalCreate}
+                openModalCreate={openCreateVehicle}
                 loading={serviceStatus.status === 'loading'} />
             {serviceStatus.status === 'error' &&
                 <Alert message={serviceStatus.error.response.detail} type="error" showIcon />}

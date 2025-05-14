@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import InputSelect from '../../../components/Form/InputSelect'
 import { Formik } from 'formik'
-import { IApartment, IBuilding, IOptionSelector } from '../../../types/common';
-import buildingGet from '../../../services/buildingGet';
+import { IApartment, IOptionSelector } from '../../../types/common';
 import apartmentsGet from '../../../services/apartmentsGet';
 import { Button, List } from 'antd';
-import InputGroup from '../../../components/Form/InputGroup';
 import Row from '../../../components/Grid/Row';
 import ValidationSchema from './ValidationSchema';
 import { apartmentsPost } from '../../../services/apartmentPost';

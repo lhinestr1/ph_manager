@@ -12,9 +12,7 @@ export default function* rootSaga() {
                 try {
                     yield call(saga)
                     break
-                } catch (e) {
-                    //console.log(e)
-                }
+                } catch (e) {}
             }
         }))
     );

@@ -18,8 +18,6 @@ export const Pagination: React.FC<IPaginationProps> = ({
     ...pagination
 }) => {
 
-    const showTotal: PaginationProps['showTotal'] = (total) => `${total} Registros`;
-
     const handlePageChange = (page: number, pageSize: number) => {
         onPageChange(page, pageSize);
     }
@@ -31,8 +29,9 @@ export const Pagination: React.FC<IPaginationProps> = ({
             defaultCurrent={pagination.currentPage}
             onChange={handlePageChange}
             size='small'
-            showTotal={(total) => `Total ${total} registros`}
-        //showTotal={showTotal}
+            showTotal={(total) => `${total}`}
+            showQuickJumper={false}
+            showSizeChanger={false}
         />
 
     )
