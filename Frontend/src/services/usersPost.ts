@@ -14,7 +14,7 @@ export interface ParamsUserPost {
     apartmentId?: string 
 }
 
-const url = 'users/';
+const url = 'users';
 export const usersPost = serviceBuilder<ParamsUserPost, None>('post', {
     url,
     auth: true,

@@ -11,7 +11,7 @@ export interface Params {
     apartmentId: string
 }
 
-const url = 'vehicles/';
+const url = 'vehicles';
 export const vehiclePost = serviceBuilder<Params, None>('post', {
     url,
     auth: true,
