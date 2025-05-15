@@ -158,7 +158,10 @@ const AdminApartment: React.FC<Props> = ({
                     ownerId: value.ownerId
                 })
             });
-            setApartmentSelected(response.payload)
+            setApartmentSelected( prev => ({
+                ...prev,
+                ownerName: response.payload.ownerName
+            }))
             setServiceStatus({
                 status: 'init'
             });

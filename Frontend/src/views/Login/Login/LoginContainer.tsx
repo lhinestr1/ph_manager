@@ -32,7 +32,7 @@ const LoginView: React.FC<Props> = ({
     return (
         <Styled.Background>
             <Formik
-                initialValues={{ email: "luishinestroza1992@gmail.com", password: "" }}
+                initialValues={{ email: "", password: "" }}
                 onSubmit={submitTrap(async (values, _, setFormError) => {
                     try {
                         setloading(true);

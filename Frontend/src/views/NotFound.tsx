@@ -23,9 +23,9 @@ const NotFound: React.FC = () => (
   <NotFoundStyled>
     <h1>404</h1>
     <p>No pudimos encontrar la pagina que estabas buscando.</p>
-    <button as={NavLink} outline to="/home">
+    <NavLink to={"/home"}>
       Volver atras
-    </button>
+    </NavLink>
   </NotFoundStyled>
 );
 
