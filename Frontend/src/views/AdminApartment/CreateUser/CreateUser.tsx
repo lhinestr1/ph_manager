@@ -55,6 +55,7 @@ export const CreateUser: React.FC<Props> = ({
                 try {
                     await userPost({
                         ...values,
+                        documentNumber: values.documentNumber.toString(),
                         apartmentId: values.apartmentSelector,
                     });
                 } catch (error) {

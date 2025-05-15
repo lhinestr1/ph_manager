@@ -9,6 +9,13 @@ export type ITypes = { label: string, value: string | number }
 
 export const roles = ['Administrador', 'Propietario', 'Guardia', 'Inquilino'];
 
+export enum E_roles {
+    Administrador = "Administrador",
+    Propietario = "Propietario",
+    Inquilino = "Inquilino",
+    Guardia = "Guardia",
+}
+
 export interface IBuilding {
     name: string;
     description: string;

@@ -10,7 +10,7 @@ import { ListVehicles } from './ListVehicles';
 import { vehicleDelete as vehicleDeleteService } from '../../services/vehicleDelete';
 import { Alert } from '../../components/UI/Alert';
 import { Button, Switch } from 'antd';
-import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, EditOutlined } from '@ant-design/icons';
 import apartmentGet from '../../services/apartmentGet';
 import { useServiceStatus } from '../../hooks/useServiceStatus';
 import ApiError from '../../types/ApiError';
@@ -216,12 +216,12 @@ const AdminApartment: React.FC<Props> = ({
             <Row $justifyContent='center' $gap={10} className='title' $alignItems='center' style={{ marginTop: '20px' }}>
                 <Button
                     size='small'
-                    title='Propietario/a'
+                    title='Cambiar propietario/a'
                     type="primary"
                     className='addBtn'
                     shape="circle"
                     onClick={openAssignUser}
-                    icon={<UserOutlined />}
+                    icon={<EditOutlined />}
                 />
                 {apartmentSelected?.ownerName}
             </Row>

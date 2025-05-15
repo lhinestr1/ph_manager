@@ -5,14 +5,17 @@ import { connect } from "react-redux";
 import { PHManagerState } from "../../store";
 import { NavLink } from "react-router-dom";
 import LogoImg from "../../images/logoarrecife.png"
+import { E_roles } from "../../types/common";
 
 
 interface Props {
     loggedIn: boolean;
+    roleUser: string
 }
 
 const Header: React.FC<Props> = ({
-    loggedIn
+    loggedIn,
+    roleUser
 }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -32,7 +35,7 @@ const Header: React.FC<Props> = ({
                         </HamburgerButton>
                     )}
                     <div className="logoContainer">
-                        { loggedIn && <img src={LogoImg} alt="Logo" className="logoimg"/> }
+                        {loggedIn && <img src={LogoImg} alt="Logo" className="logoimg" />}
                         <Logo>Arrecife</Logo>
                     </div>
                 </HeaderLeft>
@@ -42,9 +45,11 @@ const Header: React.FC<Props> = ({
                         <NavLink to="/search" onClick={toggleSidebar}>
                             <p>Buscador de vehiculos</p>
                         </NavLink>
-                        <NavLink to="/admin" onClick={toggleSidebar}>
-                            <p>Administración</p>
-                        </NavLink>
+                        {roleUser === E_roles.Administrador && (
+                            <NavLink to="/admin" onClick={toggleSidebar}>
+                                <p>Administración</p>
+                            </NavLink>
+                        )}
                         <NavLink to="/logout" onClick={toggleSidebar}>
                             <p>Cerrar sessión</p>
                         </NavLink>
@@ -64,10 +69,12 @@ const Header: React.FC<Props> = ({
                                 <Car size={28} color="white" />
                                 <p>Buscador de vehiculos</p>
                             </NavLink>
-                            <NavLink to="/admin" onClick={toggleSidebar}>
-                                <Settings size={28} color="white" />
-                                <p>Administración</p>
-                            </NavLink>
+                            {roleUser === E_roles.Administrador && (
+                                <NavLink to="/admin" onClick={toggleSidebar}>
+                                    <Settings size={28} color="white" />
+                                    <p>Administración</p>
+                                </NavLink>
+                            )}
                             <NavLink to="/logout" onClick={toggleSidebar}>
                                 <LogOut size={28} color="white" />
                                 <p>Cerrar sessión</p>
@@ -84,4 +91,5 @@ const Header: React.FC<Props> = ({
 
 export default connect((state: PHManagerState) => ({
     loggedIn: state.session.loggedIn,
+    roleUser: state.session.attrs.role
 }))(Header);

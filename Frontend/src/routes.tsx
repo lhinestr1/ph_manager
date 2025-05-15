@@ -7,11 +7,11 @@ import { Search } from './views/Search';
 import PrivateRoute from './PrivateRoute';
 import Admin from './views/Admin/Admin';
 import AdminApartment from './views/AdminApartment/AdminApartment';
-import { CreateVehicle } from './views/AdminApartment/CreateVehicle';
+import { E_roles } from './types/common';
 
 const AppRoutes = () => (
     <Routes>
-        <Route element={<PrivateRoute/>}>
+        <Route element={<PrivateRoute requiredRoles={[E_roles.Administrador]}/>}>
             <Route path="/" element={<div>Home</div>} />
             <Route path="/search" element={<Search />} />
             <Route path="/admin" element={<Admin />} />
