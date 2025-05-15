@@ -12,7 +12,7 @@ export const useServiceStatus = (initStatus: Service): [Service, (status :Servic
                 setServiceStatus({
                     status: 'init'
                 })
-            }, 3000);
+            }, 4000);
         }
     }
 

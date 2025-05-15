@@ -151,16 +151,15 @@ const AdminApartment: React.FC<Props> = ({
             const response = await apartmentStatusPatch({
                 apartment_id: apartmentId
             })({
-                ...(value.isInArrears && {
-                    isInArrears: value.isInArrears
-                }),
+                isInArrears: value.isInArrears,
                 ...(value.ownerId && {
                     ownerId: value.ownerId
                 })
             });
             setApartmentSelected( prev => ({
                 ...prev,
-                ownerName: response.payload.ownerName
+                ownerName: response.payload.ownerName,
+                isInArrears: response.payload.isInArrears
             }))
             setServiceStatus({
                 status: 'init'

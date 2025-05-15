@@ -11,6 +11,7 @@ import { useServiceStatus } from '../../../hooks/useServiceStatus';
 import ApiError from '../../../types/ApiError';
 import { ParamsUserPost, usersPost } from '../../../services/usersPost';
 import { Button } from 'antd';
+import { Alert } from '../../../components/UI/Alert';
 
 const ListUsers = styled.div`
   display: flex;
@@ -114,6 +115,8 @@ export const Users = () => {
                     />
                 </Row>
             )}
+            {serviceStatus.status === 'error' &&
+                            <Alert message={serviceStatus.error.response.detail} type="error" showIcon />}
         </Container>
     )
 }
