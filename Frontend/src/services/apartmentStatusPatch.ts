@@ -6,13 +6,15 @@ export interface Params {
     apartment_id: string;
   }
   payload: {
-    isArrears: boolean;
+    isInArrears?: boolean;
+    ownerId?: string;
+    buildingId?: string;
   }
 }
 
 export default ({ apartment_id }: Params["params"]) => {
-    const url = `apartments/${apartment_id}/status`;
-    return serviceBuilder<Params["payload"], IApartment>('put', {
+    const url = `apartments/${apartment_id}`;
+    return serviceBuilder<Params["payload"], IApartment>('patch', {
         url,
         auth: true,
     });

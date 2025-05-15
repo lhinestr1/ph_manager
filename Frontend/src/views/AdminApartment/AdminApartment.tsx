@@ -5,7 +5,7 @@ import Row from '../../components/Grid/Row';
 import apartmentVehicleGet from '../../services/apartmentVehicleGet';
 import { connect } from 'react-redux';
 import { PHManagerState } from '../../store';
-import { IApartment, IBuilding, IUser, IVehicle } from '../../types/common';
+import { IApartment, IBuilding, IVehicle } from '../../types/common';
 import { ListVehicles } from './ListVehicles';
 import { vehicleDelete as vehicleDeleteService } from '../../services/vehicleDelete';
 import { Alert } from '../../components/UI/Alert';
@@ -14,12 +14,10 @@ import { ArrowLeftOutlined, UserOutlined } from '@ant-design/icons';
 import apartmentGet from '../../services/apartmentGet';
 import { useServiceStatus } from '../../hooks/useServiceStatus';
 import ApiError from '../../types/ApiError';
-import apartmentStatusPut from '../../services/apartmentStatusPut';
+import apartmentStatusPatch from '../../services/apartmentStatusPatch';
 import { ModalC, useModalC } from '../../components/UI/Modal';
 import { CreateVehicle } from './CreateVehicle';
 import { vehiclePost, Params as ParamsVehiclePost } from '../../services/vehiclePost';
-import { CreateUser } from './CreateUser';
-import { usersPost } from '../../services/usersPost';
 import { AssignUser } from './AssignUser';
 
 const Container = styled.div`
@@ -142,20 +140,23 @@ const AdminApartment: React.FC<Props> = ({
         }
     }
 
-    const handlerChangeStatus = async (isArrears: boolean) => {
+    const handlerSetApartment = async (value: { isInArrears?: boolean, ownerId?: string }) => {
         try {
             setServiceStatus({
                 status: 'loading',
             })
-            await apartmentStatusPut({
+
+            const response = await apartmentStatusPatch({
                 apartment_id: apartmentId
             })({
-                isArrears: !isArrears
+                ...(value.isInArrears && {
+                    isInArrears: value.isInArrears
+                }),
+                ...(value.ownerId && {
+                    ownerId: value.ownerId
+                })
             });
-            setApartmentSelected(prev => ({
-                ...prev,
-                isInArrears: !prev.isInArrears
-            }))
+            setApartmentSelected(response.payload)
             setServiceStatus({
                 status: 'init'
             });
@@ -168,8 +169,6 @@ const AdminApartment: React.FC<Props> = ({
             }
         }
     }
-
-
 
     const openCreateVehicle = async () => {
         openModal({
@@ -184,8 +183,12 @@ const AdminApartment: React.FC<Props> = ({
     }
 
     const openAssignUser = async () => {
+        //Falta back me devulva el id del usuario propietario
         openModal({
-            main: <AssignUser />,
+            main: <AssignUser
+                close={modal.close}
+                userSelected={null}
+                setApartment={handlerSetApartment} />,
         });
     }
 
@@ -227,7 +230,7 @@ const AdminApartment: React.FC<Props> = ({
                     checked={!apartmentSelected.isInArrears}
                     checkedChildren="Al dia"
                     unCheckedChildren="En Mora"
-                    onChange={handlerChangeStatus}
+                    onChange={value => handlerSetApartment({ isInArrears: !value })}
                 />
             </Row>
             <ListVehicles

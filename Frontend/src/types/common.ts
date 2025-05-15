@@ -5,6 +5,8 @@ export type rolesType = 'Administrador' | 'Propietario' | 'Inquilino' | 'Guardia
 
 export const vehicleTypes: vehicleType[] = ['Automóvil', 'Motocicleta'];
 
+export type ITypes = { label: string, value: string | number }
+
 export const roles = ['Administrador', 'Propietario', 'Guardia', 'Inquilino'];
 
 export interface IBuilding {
