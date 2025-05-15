@@ -23,9 +23,10 @@ export const SearchDetail: React.FC<Props> = ({
         <Flex gap="middle" align="center" vertical>
             <Card style={{ width: '100%', minWidth: 300 }}>
                 <Card.Meta
-                    title={vehicleInfo.plate}
+                    title={<h3>{ apartmentInfo.ownerName }</h3>}
                     description={
                         <div>
+                            <div>{vehicleInfo.plate}</div>
                             <p>{aptoName}</p>
                             {
                                 tenants.map( (name: string) => (

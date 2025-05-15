@@ -41,7 +41,8 @@ export const Users = () => {
         try {
             const { payload: { items, ...paginationServer } } = await usersGet({
                 page: currentPage,
-                size: 50
+                size: 50,
+                search: ''
             });
             setPagination({
                 currentPage: paginationServer.page,
