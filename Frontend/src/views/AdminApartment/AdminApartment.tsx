@@ -19,6 +19,7 @@ import { ModalC, useModalC } from '../../components/UI/Modal';
 import { CreateVehicle } from './CreateVehicle';
 import { vehiclePost, Params as ParamsVehiclePost } from '../../services/vehiclePost';
 import { AssignUser } from './AssignUser';
+import { ListTenants } from './ListTenants';
 
 const Container = styled.div`
     .nameApto {
@@ -39,7 +40,8 @@ export const InitialApartmentSelected: IApartment = {
     number: '',
     updatedAt: '',
     buildingId: '',
-    ownerName: ''
+    ownerName: '',
+    tenant_names: []
 }
 
 const AdminApartment: React.FC<Props> = ({
@@ -242,6 +244,12 @@ const AdminApartment: React.FC<Props> = ({
                 }}
                 openModalCreate={openCreateVehicle}
                 loading={serviceStatus.status === 'loading'} />
+            <div style={{ marginTop: "40px" }}>
+                <ListTenants
+                    tenants={apartmentSelected.tenant_names}
+                />
+            </div>
+
             {serviceStatus.status === 'error' &&
                 <Alert message={serviceStatus.error.response.detail} type="error" showIcon />}
         </Container>

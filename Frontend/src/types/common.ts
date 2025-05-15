@@ -33,6 +33,7 @@ export interface IApartment {
     ownerName: string,
     createdAt: string,
     updatedAt: string,
+    tenant_names: string[],
 }
 
 export interface IVehicle {

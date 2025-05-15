@@ -5,11 +5,6 @@ import Column from '../../../components/Grid/Column'
 import { Button } from 'antd';
 import * as Styled from './styles'
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
-import { N } from 'ts-toolbelt';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { ModalC, useModalC } from '../../../components/UI/Modal';
-import { CreateVehicle } from '../CreateVehicle';
-import { isDataView } from 'util/types';
 
 interface Props {
     vehicles: IVehicle[];
@@ -30,7 +25,7 @@ export const ListVehicles: React.FC<Props> = ({
     return (
         <div>
             <Styled.Title>
-                <div>Lista de vehiculos</div>
+                <div>Lista de vehiculos:</div>
                 {
                     vehicles.length < 2 && (
                         
