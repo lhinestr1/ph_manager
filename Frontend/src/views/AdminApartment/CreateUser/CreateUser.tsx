@@ -66,7 +66,7 @@ export const CreateUser: React.FC<Props> = ({
             {({
                 values: { role }
             }) =>
-                <Form style={{ width: '300px' }} autoComplete='off'>
+                <Form style={{ width: '250px' }} autoComplete='off'>
                     <InputGroup name='firstName' label='Nombres' autoFocus />
                     <InputGroup name='lastName' label='Apellidos' />
                     <InputGroup name='documentNumber' type='number' label='Documento de identidad' />
@@ -83,14 +83,6 @@ export const CreateUser: React.FC<Props> = ({
                     )}
                     <Row $gap={5} $justifyContent='right'>
                         <Button
-                            htmlType="submit"
-                            className="btn"
-                            type="primary"
-                            loading={loading}
-                        >
-                            Guardar
-                        </Button>
-                        <Button
                             className="btn"
                             type="primary"
                             danger
@@ -98,6 +90,14 @@ export const CreateUser: React.FC<Props> = ({
                             onClick={cancel}
                         >
                             Cancelar
+                        </Button>
+                        <Button
+                            htmlType="submit"
+                            className="btn"
+                            type="primary"
+                            loading={loading}
+                        >
+                            Guardar
                         </Button>
                     </Row>
                 </Form>

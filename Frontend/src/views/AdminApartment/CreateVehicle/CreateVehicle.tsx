@@ -11,6 +11,7 @@ import Label from '../../../components/Form/Label'
 import {vehicleTypes } from '../../../types/common'
 import Row from '../../../components/Grid/Row'
 import * as Styled from './styles'
+import { formats } from '../../../components/Form/Input'
 
 const initialValues: Params = {
     vehicleType: '',
@@ -53,7 +54,7 @@ export const CreateVehicle: React.FC<Props> = ({
                         <Label>Tipo de vehiculo*</Label>
                         <InputSelect name='vehicleType' placeholder='Seleccione' options={options} />
                     </FormGroup>
-                    <InputGroup name='plate' label='Placa*' placeholder='Ingrese' />
+                    <InputGroup name='plate' label='Placa*' placeholder='Ingrese' format={formats.wordUpper} />
                     <InputGroup name='brand' label='Marca' placeholder='Ingrese' />
                     <InputGroup name='model' label='Modelo' placeholder='Ingrese' />
                     <InputGroup name='color' label='Color' placeholder='Ingrese' />

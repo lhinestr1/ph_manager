@@ -91,9 +91,9 @@ const InputComponent: React.FC<FieldProps & Props> = ({
   const onChange = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       if (format) {
-        ev.target.value = ev.target.value.replace(format.match, format.replace);
+        //ev.target.value = ev.target.value.replace(format.match, format.replace);
         if (format.upper) {
-          ev.target.value = ev.target.value.toUpperCase();
+          ev.target.value = ev.target.value.toString().toUpperCase()
         }
       }
 
