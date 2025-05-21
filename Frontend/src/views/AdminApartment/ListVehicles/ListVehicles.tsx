@@ -46,7 +46,7 @@ export const ListVehicles: React.FC<Props> = ({
                 {vehicles.length === 0 ?
                     <div>No hay vehiculos registrados</div> :
                     vehicles.map((item, index) => (
-                        <Styled.Item>
+                        <Styled.Item key={index}>
                             <Row key={index} $justifyContent='space-between' >
                                 <Column>
                                     <div>{item.plate}</div>

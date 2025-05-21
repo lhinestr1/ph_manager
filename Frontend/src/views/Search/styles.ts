@@ -7,3 +7,13 @@ export const Container = styled.div`
     flex-direction: column;
     box-sizing: border-box;
 `;
+
+export const Item = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    line-height: 20px;
+    > .label {
+        font-size: 18px; 
+    }
+`;

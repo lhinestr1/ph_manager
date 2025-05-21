@@ -1,13 +1,9 @@
 import React from 'react';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Alert, Card, Flex } from 'antd';
 import { Response } from '../../services/vehiclePlateGet';
-
-const actions: React.ReactNode[] = [
-    <EditOutlined key="edit" onClick={() => alert("Prueba")} />,
-    <SettingOutlined key="setting" />,
-    <EllipsisOutlined key="ellipsis" />,
-];
+import { Plate } from '../../components/Plate/Plate';
+import Row from '../../components/Grid/Row';
+import { Item } from './styles';
 
 interface Props {
     data: Response
@@ -19,25 +15,52 @@ export const SearchDetail: React.FC<Props> = ({
 
     const aptoName = `${apartmentInfo.buildingName} apto ${apartmentInfo.number}`;
 
-    return (    
+    return (
         <Flex gap="middle" align="center" vertical>
             <Card style={{ width: '100%', minWidth: 300 }}>
                 <Card.Meta
-                    title={<h3>{ apartmentInfo.ownerName }</h3>}
+                    title={<Row $justifyContent='center' className='title' style={{ fontSize: '24px' }}>{aptoName}</Row>}
                     description={
                         <div>
-                            <div>{vehicleInfo.plate}</div>
-                            <p>{aptoName}</p>
-                            {
-                                tenants.map( (name: string) => (
-                                    <p>{ name }</p>
-                                ))
+                            <Row $justifyContent='center' >
+                                <Plate numero={vehicleInfo.plate} />
+                            </Row>
+                            <Item>
+                                <div className='title label'>Propietario:</div>
+                                <div>{apartmentInfo.ownerName}</div>
+                            </Item>
+                            {tenants.length > 0 && (
+                                <Item>
+                                    <div className='title label'>Inquilinos:</div>
+                                    {tenants.map((name: string) => (
+                                        <div>{name}</div>
+                                    ))}
+                                </Item>
+                            )}
+                            <Item>
+                                <div className='title label'>Tipo de vihiculo:</div>
+                                <div>{vehicleInfo.vehicleType}</div>
+                            </Item>
+                            {vehicleInfo.brand &&
+                                <Item>
+                                    <div className='title label'>Marca:</div>
+                                    <div>{vehicleInfo.brand}</div>
+                                </Item>
                             }
-                            <p>Tipo de vihiculo: {vehicleInfo.vehicleType}</p>
-                            <p>Marca: {vehicleInfo.brand}</p>
-                            <p>Modelo: {vehicleInfo.model}</p>
-                            <p>Color: {vehicleInfo.color}</p>
+                            {vehicleInfo.model &&
+                                <Item>
+                                    <div className='title label'>Modelo:</div>
+                                    <div>{vehicleInfo.model}</div>
+                                </Item>
+                            }
+                            {vehicleInfo.color &&
+                                <Item>
+                                    <div className='title label'>Color:</div>
+                                    <div>{vehicleInfo.color}</div>
+                                </Item>
+                            }
                             <Alert
+                                style={{ marginTop: '20px' }}
                                 type={apartmentInfo.isInArrears ? 'error' : 'success'}
                                 message={`Estado de cuenta: ${apartmentInfo.isInArrears ? "En mora" : "Al dia"}`}
                                 description={apartmentInfo.isInArrears ? `${aptoName}  tiene un saldo pendiente, favor acercarse a administraccion.` : "El vehiculo puede ingresar."}

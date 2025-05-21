@@ -53,7 +53,7 @@ export const Search = () => {
           </Styled.Container>
         </Form>
       </Formik>
-      <div style={{ marginTop: 40, padding: 10 }}>
+      <div style={{ padding: 10 }}>
         {vehicle ? <SearchDetail data={vehicle} /> : <Empty />}
       </div>
     </div>
