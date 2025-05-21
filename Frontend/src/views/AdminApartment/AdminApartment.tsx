@@ -32,6 +32,13 @@ interface Props {
     buildings: IBuilding[]
 }
 
+const ConfirmDelete = {
+    title: <>Alerta</>,
+    main: <div>Esta seguro que desea eliminar el vehiculo?</div>,
+    accept: "Si, Eliminar",
+    cancel: "Cancelar"
+}
+
 export const InitialApartmentSelected: IApartment = {
     buildingName: '',
     createdAt: '',
@@ -123,15 +130,17 @@ const AdminApartment: React.FC<Props> = ({
 
     const handlerDeleteVehicle = async (id: string) => {
         try {
-            setServiceStatus({
-                status: 'loading',
-            })
-            await vehicleDeleteService({
-                vehicle_id: id
-            });
-            setServiceStatus({
-                status: 'init'
-            });
+            if ((await openModal(ConfirmDelete)).accept) {
+                setServiceStatus({
+                    status: 'loading',
+                })
+                await vehicleDeleteService({
+                    vehicle_id: id
+                });
+                setServiceStatus({
+                    status: 'init'
+                });
+            }
         } catch (e) {
             if (e instanceof ApiError) {
                 setServiceStatus({

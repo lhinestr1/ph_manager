@@ -2,9 +2,9 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import noop from '../../helpers/noop';
-import { Flex } from '../Grid/Flex';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import Row from '../Grid/Row';
 
 const ModalStyled = styled.div`
   position: fixed;
@@ -64,6 +64,9 @@ const Content = styled.div`
   max-width: 700px;
   border-radius: 10px;
   font-size: 1.1rem;
+  .buttons {
+    margin-top: 20px;
+  }
 `;
 
 // modal 2
@@ -145,18 +148,18 @@ export const ModalC: React.FC<ModalProps> = ({
               {content.title && <div className="title">{content.title}</div>}
               {content.main && <div className="main">{content.main}</div>}
               {(content.accept || content.cancel) && (
-                <Flex row justify="center">
-                  {content.accept && (
-                    <Button onClick={accept}>
-                      {content.accept === true ? 'Aceptar' : content.accept}
-                    </Button>
-                  )}
+                <Row $justifyContent='center' $gap={10} className='buttons'>
                   {content.cancel && (
                     <Button onClick={cancel}>
                       {content.cancel === true ? 'Cancelar' : content.cancel}
                     </Button>
                   )}
-                </Flex>
+                  {content.accept && (
+                    <Button onClick={accept} type='primary'>
+                      {content.accept === true ? 'Aceptar' : content.accept}
+                    </Button>
+                  )}
+                </Row>
               )}
             </Content>
           </ModalStyled>,
