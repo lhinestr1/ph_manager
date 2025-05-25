@@ -14,6 +14,10 @@ export const HeaderWrapper = styled.header`
   color: white;
   padding: 0px 1rem;
   height: 50px;
+  position: sticky;
+  left: 0px;
+  top: 0px;
+  z-index: 100;
 `;
 
 export const HeaderLeft = styled.div<{ $loggedIn: boolean }>`
@@ -36,7 +40,7 @@ export const HeaderLeft = styled.div<{ $loggedIn: boolean }>`
       .logoimg {
         display: none;
       }`
-    };
+  };
   }
 `;
 

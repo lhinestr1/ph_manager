@@ -1,6 +1,18 @@
 import { Field, FieldProps } from 'formik';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Eye, EyeOff, X } from 'lucide-react';
+
+const Container = styled.div`
+  position: relative;
+  display: flex;
+  cursor: pointer;
+  .ico {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+`;
 
 export const InputCSS = css<{ $invalid?: boolean; $empty?: boolean }>`
   box-sizing: border-box;
@@ -61,6 +73,7 @@ export type InputType =
 export interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   type?: InputType;
+  reset?: boolean;
   autocomplete?: 'off' | 'on';
   format?: {
     match: RegExp;
@@ -86,8 +99,13 @@ const InputComponent: React.FC<FieldProps & Props> = ({
   form,
   field,
   format,
+  type,
+  reset,
   ...restProps
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [typeInput, settypeInput] = useState<InputType>(type ?? "text");
+
   const onChange = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       if (format) {
@@ -103,15 +121,43 @@ const InputComponent: React.FC<FieldProps & Props> = ({
     [field.onChange, format]
   );
 
+  const onToggleType = () => {
+    if (!restProps.disabled) {
+      settypeInput(prev => prev === "password" ? "text" : "password");
+    }
+  }
+
+  const resetValue = () => {
+    form.setFieldValue(field.name, "");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }
+
+
   return (
-    <InputStyled
-      $invalid={form.touched[field.name]! && !!form.errors[field.name]}
-      $empty={!field.value}
-      id={field.name}
-      {...restProps}
-      {...field}
-      onChange={onChange}
-    />
+    <Container>
+      <InputStyled
+        ref={inputRef}
+        $invalid={form.touched[field.name]! && !!form.errors[field.name]}
+        $empty={!field.value}
+        id={field.name}
+        type={typeInput}
+        {...restProps}
+        {...field}
+        onChange={onChange}
+      />
+      {type === "password" && (
+        <div className='ico' onClick={onToggleType}>
+          {typeInput === 'password' ? <EyeOff /> : <Eye />}
+        </div>
+      )}
+      {reset && field.value !== "" && type !== "password" && (
+        <div className='ico' onClick={resetValue}>
+          <X />
+        </div>
+      )}
+    </Container>
   );
 };
 

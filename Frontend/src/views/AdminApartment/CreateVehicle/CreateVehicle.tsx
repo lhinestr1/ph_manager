@@ -8,7 +8,7 @@ import ValidationSchema from './ValidationSchema'
 import InputSelect from '../../../components/Form/InputSelect'
 import FormGroup from '../../../components/Form/FormGroup'
 import Label from '../../../components/Form/Label'
-import {vehicleTypes } from '../../../types/common'
+import { vehicleTypes } from '../../../types/common'
 import Row from '../../../components/Grid/Row'
 import * as Styled from './styles'
 import { formats } from '../../../components/Form/Input'
@@ -26,7 +26,7 @@ const options = vehicleTypes.map((item: string) => ({ label: item, value: item }
 
 interface Props {
     apartmentId: string;
-    vehiclePost: (params: Params ) => Promise<void>;
+    vehiclePost: (params: Params) => Promise<void>;
     cancel?: () => void;
     loading?: boolean;
 }
@@ -42,11 +42,11 @@ export const CreateVehicle: React.FC<Props> = ({
         <Styled.Container>
             <Formik
                 validationSchema={ValidationSchema}
-                initialValues={{ ...initialValues, apartmentId: apartmentId}}
+                initialValues={{ ...initialValues, apartmentId: apartmentId }}
                 onSubmit={async values => {
                     try {
                         await vehiclePost(values);
-                    } catch (error) {}
+                    } catch (error) { }
                 }}
             >
                 <Form className='form' autoComplete='off'>
@@ -59,19 +59,11 @@ export const CreateVehicle: React.FC<Props> = ({
                     <InputGroup name='model' label='Modelo' placeholder='Ingrese' />
                     <InputGroup name='color' label='Color' placeholder='Ingrese' />
                     <Row $gap={5} $justifyContent='right'>
-                        <Button
-                            htmlType="submit"
-                            className="btn"
-                            type="primary"
-                            loading={loading}
-                        >
-                            Guardar
-                        </Button>
                         {
                             cancel && (
                                 <Button
                                     className="btn"
-                                    type="primary"
+                                    type="link"
                                     danger
                                     loading={loading}
                                     onClick={cancel}
@@ -80,6 +72,14 @@ export const CreateVehicle: React.FC<Props> = ({
                                 </Button>
                             )
                         }
+                        <Button
+                            htmlType="submit"
+                            className="btn"
+                            type="primary"
+                            loading={loading}
+                        >
+                            Guardar
+                        </Button>
                     </Row>
                 </Form>
             </Formik>

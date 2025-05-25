@@ -47,7 +47,7 @@ export const Search = () => {
       >
         <Form autoComplete='off'>
           <Styled.Container>
-            <InputGroup name="search" placeholder="Ingrese la placa del vehículo (ej. ENM535)" autoFocus format={formats.wordUpper} />
+            <InputGroup name="search" placeholder="Ingrese la placa del vehículo (ej. ECM532)" reset autoFocus format={formats.wordUpper} />
             <Button loading={loading} htmlType='submit' className='btn' type='primary' style={{ backgroundColor: "#1f2937" }}>Buscar</Button>
             <FormError />
           </Styled.Container>
