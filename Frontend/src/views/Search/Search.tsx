@@ -11,6 +11,7 @@ import ApiError from '../../types/ApiError';
 import FormError from '../../components/Form/FormError';
 import { SearchDetail } from './SearchDetail';
 import { formats } from '../../components/Form/Input';
+import FormChange from '../../components/Form/FormChange';
 
 export interface FormValues {
   search: string
@@ -30,6 +31,7 @@ export const Search = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
+        validateOnChange={false}
         onSubmit={submitTrap(async (values, _, setFormError) => {
           try {
             setloading(true);
@@ -47,6 +49,7 @@ export const Search = () => {
       >
         <Form autoComplete='off'>
           <Styled.Container>
+            <FormChange onChange={ values => setVehicle(null) } />
             <InputGroup name="search" placeholder="Ingrese la placa del vehículo (ej. ECM532)" reset autoFocus format={formats.wordUpper} />
             <Button loading={loading} htmlType='submit' className='btn' type='primary' style={{ backgroundColor: "#1f2937" }}>Buscar</Button>
             <FormError />
