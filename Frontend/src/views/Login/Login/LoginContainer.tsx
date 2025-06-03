@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import Row from "../../../components/Grid/Row";
 import Logo from "../../../images/logoarrecife.png"
+import ApiError from "../../../types/ApiError";
 
 interface Props {
     loggedIn: boolean;
@@ -39,7 +40,11 @@ const LoginView: React.FC<Props> = ({
                         await login(values);
                         navigate("/search", { replace: true });
                     } catch (e) {
-                        setFormError("Error de autenticación, verifique sus credenciales");
+                        if (e instanceof ApiError) {
+                            setFormError("Error de autenticación, verifique sus credenciales");
+                        } else {
+                            setFormError("Error de conexión, contacte al administrador del sistema");
+                        }
                     } finally {
                         setloading(false);
                     }
@@ -50,7 +55,7 @@ const LoginView: React.FC<Props> = ({
                     <Form autoComplete="off">
                         <Styled.Title>Iniciar Sesión</Styled.Title>
                         <Row $justifyContent="center" $alignItems="center" style={{ marginBottom: "20px" }}>
-                            <img src={Logo} alt="Logo" style={{ width: "100px", height: "120px"}} />
+                            <img src={Logo} alt="Logo" style={{ width: "100px", height: "120px" }} />
                         </Row>
                         <InputGroup name="email" label="Correo electronico" placeholder="Ingrese correo electronico" autoFocus />
                         <InputGroup name="password" type="password" label="Contraseña" placeholder="Ingrese contraseña" />
@@ -60,7 +65,6 @@ const LoginView: React.FC<Props> = ({
                         </Button>
                     </Form>
                 </Styled.StyledCard>
-
             </Formik>
         </Styled.Background>
     );

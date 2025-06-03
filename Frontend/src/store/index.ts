@@ -18,7 +18,15 @@ const rootReducer = combineReducers({
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
-})
+});
+
+Object.defineProperty(window, '$store', {
+    configurable: false,
+    enumerable: true,
+    get() {
+      return store;
+    },
+  });
 
 sagaMiddleware.run(rootSaga);
 

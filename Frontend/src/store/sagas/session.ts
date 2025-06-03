@@ -44,6 +44,7 @@ export function* loginSaga(action: ActionPromise<UserCredentials>): SagaIterator
             yield put(session.actions.loginError(e));
             action.meta.reject(e);
         }
+        action.meta.reject(new Error('Error de conexión, contacte al administrador del sistema'));
     }
 }
 

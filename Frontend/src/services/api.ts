@@ -1,5 +1,6 @@
 //import { readToken } from '../helpers/tokenHelpers';
 import { readToken } from '../helpers/tokenHelpers';
+import { session } from '../store/reducers/sessionReducer';
 import ApiError from '../types/ApiError';
 import API_URL from './API_URL';
 
@@ -59,9 +60,9 @@ export const httpMethod = (apiUrl: string) => async (
       return {};
     }
   } else {
-    /*if (response.status === 409) {
+    if (response.status === 401) {
       (window as any).$store.dispatch(session.actions.logout());
-    }*/
+    }
     let responseBody: any = {};
 
     try {
