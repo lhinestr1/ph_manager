@@ -27,7 +27,7 @@ export const httpMethod = (apiUrl: string) => async (
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     } else {
-      throw new Error('Missing token');
+      (window as any).$store.dispatch(session.actions.logout());
     }
   }
 
