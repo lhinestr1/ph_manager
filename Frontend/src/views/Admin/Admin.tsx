@@ -1,16 +1,10 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
-import { Buildings } from './Buildings';
 import { ApartmentsView } from './Apartments';
 import { Users } from './Users';
 
 const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: 'Torres',
-    children: <Buildings />,
-  },
   {
     key: '2',
     label: 'Apartamentos',

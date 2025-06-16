@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import InputSelect from '../../../components/Form/InputSelect'
 import { Formik } from 'formik'
 import { IApartment, IOptionSelector } from '../../../types/common';
-import apartmentsGet from '../../../services/apartmentsGet';
 import { Button, List } from 'antd';
 import Row from '../../../components/Grid/Row';
-import ValidationSchema from './ValidationSchema';
-import { apartmentsPost } from '../../../services/apartmentPost';
 import Form from '../../../components/Form/Form';
 import { submitTrap } from '../../../helpers/formHelpers';
 import { Settings } from 'lucide-react';
@@ -15,14 +12,15 @@ import { IPagination } from '../../../components/Pagination/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PHManagerState } from '../../../store';
+import apartmentsFilter from '../../../services/apartmentsFilter';
 
 export interface IFormValues {
     building: string;
-    apto: string;
+    isInArrears: string;
 }
 const initialValues: IFormValues = {
     building: '',
-    apto: ''
+    isInArrears: ''
 }
 
 interface Props {
@@ -33,7 +31,6 @@ const ApartmentsView: React.FC<Props> = ({
 }) => {
     const navigate = useNavigate();
     const [apartments, setApartments] = useState<IApartment[]>([]);
-    const [buildingSelected, setBuildingSelected] = useState<string | null>(null);
     const [pagination, setPagination] = useState<IPagination>({
         currentPage: 1,
         pageSize: 0,
@@ -42,46 +39,34 @@ const ApartmentsView: React.FC<Props> = ({
     });
     const [params] = useSearchParams();
 
-    const navigateAdminApartment = (id: string, numberApartment: string) => {
-        navigate(`/admin/apartment/${id}`, { state: { building: buildingSelected, apto: numberApartment, id } });
+    const navigateAdminApartment = (id: string, building: string, numberApartment: string) => {
+        navigate(`/admin/apartment/${id}`, { state: { building, apto: numberApartment, id } });
     };
 
-    const handlerSetBuildingSelected = (value: string | null) => {
-        setBuildingSelected(value);
-    }
-
-    const getApartments = async (currentPage: number) => {
+    const getApartments = async (currentPage: number, data: IFormValues) => {
         try {
             setApartments([]);
-            if (!buildingSelected) return;
-            const { payload: { items, ...paginationServer } } = await apartmentsGet({ building_id: buildingSelected })({
-                page: currentPage,
-                size: 50
+            const response = await apartmentsFilter({
+                pagination: {
+                    page: currentPage,
+                    size: 50
+                },
+                filters: {
+                    isInArrears: data.isInArrears === 'true' ? true : data.isInArrears === 'false' ? false : undefined,
+                    buildingId: data.building || undefined
+                }
             });
             setPagination({
-                currentPage: paginationServer.page,
-                pages: paginationServer.pages,
-                pageSize: paginationServer.size,
-                total: paginationServer.total
+                currentPage: response.payload.page,
+                pages: response.payload.pages,
+                pageSize: response.payload.size,
+                total: response.payload.total
             });
-            setApartments(items);
+            setApartments(response.payload.items);
         } catch (error) {
             console.error('Error fetching apartments:', error);
         }
     }
-
-    useEffect(() => {
-        (async () => {
-            await getApartments(1);
-        })()
-    }, [buildingSelected]);
-
-    useEffect(() => {
-        const buildingPreselected = params.get('buildingId') as string || null;
-        if(buildingPreselected){
-            setBuildingSelected(buildingPreselected);
-        }
-    }, []);
 
     return (
         <div style={{ padding: '15px' }}>
@@ -92,69 +77,78 @@ const ApartmentsView: React.FC<Props> = ({
                 }}
                 onSubmit={submitTrap(async (values, form, setFormError) => {
                     try {
-                        await apartmentsPost({
-                            number: values.apto,
-                            building_id: values.building
-                        });
-                        form.setFieldValue('apto', '');
-                        form.setFieldTouched('apto', false);
-                        await getApartments(pagination.currentPage);
+                        await getApartments(pagination.currentPage, values);
                     } catch (error) {
-                        setFormError('error to create apartment');
+                        setFormError('Error al buscar apartamentos, intente nuevamente');
                     }
                 })}
-                validationSchema={ValidationSchema}
             >
-                <Form autoComplete='off'>
-                    <Row $gap={5} >
-                        <InputSelect
-                            placeholder='Seleccione torre'
-                            name='building'
-                            options={buildingsSelector}
-                            onChange={(value: string) => handlerSetBuildingSelected(value)}
-                        />
+                {
+                    ({ values }) => (
+                        <>
+                            <Form autoComplete='off'>
+                                <Row $gap={5} >
+                                    <InputSelect
+                                        placeholder='Seleccione torre'
+                                        name='building'
+                                        options={buildingsSelector}
+                                    />
+                                    <InputSelect
+                                        placeholder='Estado de cuenta'
+                                        name='isInArrears'
+                                        options={[{
+                                            value: false,
+                                            label: 'Al dia'
+                                        }, {
+                                            value: true,
+                                            label: 'En Mora'
+                                        }]}
+                                    />
+                                    <Button
+                                        type='primary'
+                                        htmlType='submit'
+                                        style={{ height: '37px', backgroundColor: "#1f2937" }}
+                                    >
+                                        Buscar
+                                    </Button>
+                                </Row>
+                            </Form>
+                            <List
+                                style={{ maxHeight: 'calc(100vh - 270px)', overflowY: 'auto', marginTop: '20px' }}
+                                dataSource={apartments}
+                                renderItem={(item) => (
+                                    <List.Item key={item.id}>
+                                        <List.Item.Meta
+                                            description={`Apto ${item.number}`}
+                                        />
+                                        <Button
+                                            title='Editar'
+                                            type='link'
+                                            onClick={() => navigateAdminApartment(item.id, item.buildingId, item.number)}
+                                        >
+                                            <Settings color='#1f2937' />
+                                        </Button>
 
-                        {/*<InputGroup name='apto' placeholder='Número de apto' />
-                        <Button
-                            type='primary'
-                            htmlType='submit'
-                            style={{ marginLeft: '10px', height: '37px', backgroundColor: "#1f2937" }}
-                        >
-                            Guardar
-                        </Button>*/}
-                    </Row>
-                </Form>
+                                    </List.Item>
+                                )}
+                            />
+                            {pagination.total > 0 && pagination.pages > 1 && (
+                                <Row $justifyContent='center' style={{ marginTop: '5px', padding: '10px' }}>
+                                    <Pagination
+                                        currentPage={pagination.currentPage}
+                                        pageSize={pagination.pageSize}
+                                        pages={pagination.pages}
+                                        total={pagination.total}
+                                        onPageChange={async (page) => await getApartments(page, values)}
+                                    />
+                                </Row>
+                            )}
+                        </>
+                    )
+                }
+
             </Formik>
-            <List
-                style={{ maxHeight: 'calc(100vh - 270px)', overflowY: 'auto', marginTop: '20px' }}
-                dataSource={apartments}
-                renderItem={(item) => (
-                    <List.Item key={item.id}>
-                        <List.Item.Meta
-                            description={`Apto ${item.number}`}
-                        />
-                        <Button
-                            title='Editar'
-                            type='link'
-                            onClick={() => navigateAdminApartment(item.id, item.number)}
-                        >
-                            <Settings color='#1f2937' />
-                        </Button>
 
-                    </List.Item>
-                )}
-            />
-            {pagination.total > 0 && (
-                <Row $justifyContent='center' style={{ marginTop: '5px', padding: '10px' }}>
-                    <Pagination
-                        currentPage={pagination.currentPage}
-                        pageSize={pagination.pageSize}
-                        pages={pagination.pages}
-                        total={pagination.total}
-                        onPageChange={async (page) => await getApartments(page)}
-                    />
-                </Row>
-            )}
         </div>
 
     )
