@@ -20,7 +20,6 @@ const ListUsers = styled.div`
   margin-top: 10px;
 `;
 const Container = styled.div`
-    padding: 0rem 1rem;
 `;
 
 
