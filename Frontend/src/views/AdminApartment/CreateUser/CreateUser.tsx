@@ -83,8 +83,7 @@ export const CreateUser: React.FC<Props> = ({
                     )}
                     <Row $gap={5} $justifyContent='right'>
                         <Button
-                            className="btn"
-                            type="primary"
+                            type="default"
                             danger
                             loading={loading}
                             onClick={cancel}

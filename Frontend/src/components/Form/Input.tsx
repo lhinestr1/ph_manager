@@ -18,12 +18,10 @@ export const InputCSS = css<{ $invalid?: boolean; $empty?: boolean }>`
   box-sizing: border-box;
   width: 100%;
   height:37px;
-  border: 0;
+  border: 2px solid ${(props) => (props.$invalid ? '#FF7375' : 'rgb(195, 204, 213)')};
   border-radius: 6px;
   color: #707070;
   background-color: #FFFFFF;
-  box-shadow: 0 0 4px
-    ${(props) => (props.$invalid ? '#ff7375' : '#dee2e6')};
   font-size: 13px;
   padding: .375rem .75rem;
   line-height: 1.2rem;

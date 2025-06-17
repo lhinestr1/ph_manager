@@ -62,8 +62,7 @@ export const CreateVehicle: React.FC<Props> = ({
                         {
                             cancel && (
                                 <Button
-                                    className="btn"
-                                    type="link"
+                                    type="default"
                                     danger
                                     loading={loading}
                                     onClick={cancel}

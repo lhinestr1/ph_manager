@@ -241,6 +241,7 @@ const AdminApartment: React.FC<Props> = ({
             <Row $gap={10} style={{ marginTop: '20px' }}>
                 <Switch
                     checked={!apartmentSelected.isInArrears}
+                    style={{ backgroundColor: apartmentSelected.isInArrears ? '#ff4d4f' : '#1f2937' }}
                     checkedChildren="Al dia"
                     unCheckedChildren="En Mora"
                     onChange={value => handlerSetApartment({ isInArrears: !value })}

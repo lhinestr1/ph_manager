@@ -1,7 +1,6 @@
 import { Field, FieldProps } from 'formik';
 import React from 'react';
 //import autoNextFocus from '../../helpers/autoNextFocus';
-import Error from './Error';
 import { InputCSS } from './Input';
 import styled from 'styled-components';
 import { ChevronDown } from 'lucide-react';
@@ -15,7 +14,6 @@ const SelectStyled = styled.div<{ $invalid?: boolean; $empty?: boolean }>`
     ${InputCSS}
     -webkit-appearance: none;
     -moz-appearance: textfield;
-    border: 0;
     width: 100%;
     padding-right: 20px;
   }

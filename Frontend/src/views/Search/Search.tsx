@@ -51,7 +51,7 @@ export const Search = () => {
           <Styled.Container>
             <FormChange onChange={ values => setVehicle(null) } />
             <InputGroup name="search" placeholder="Ingrese la placa del vehículo (ej. ECM532)" reset autoFocus format={formats.wordUpper} />
-            <Button loading={loading} htmlType='submit' className='btn' type='primary' style={{ backgroundColor: "#1f2937" }}>Buscar</Button>
+            <Button loading={loading} htmlType='submit' className='btn' type='primary'>Buscar</Button>
             <FormError />
           </Styled.Container>
         </Form>
