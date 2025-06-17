@@ -62,9 +62,11 @@ const ApartmentsView: React.FC<Props> = ({
                 pageSize: response.payload.size,
                 total: response.payload.total
             });
-            setApartments(response.payload.items);
+            
+            const items = response.payload.items.sort((a: any, b: any) => a.number.localeCompare(b.number, undefined, { numeric: true }));
+            setApartments(items);
         } catch (error) {
-            console.error('Error fetching apartments:', error);
+            console.error('Error buscando apartamentos:', error);
         }
     }
 
@@ -106,8 +108,9 @@ const ApartmentsView: React.FC<Props> = ({
                                     />
                                     <Button
                                         type='primary'
+                                        className='btn'
                                         htmlType='submit'
-                                        style={{ height: '37px', backgroundColor: "#1f2937" }}
+                                        style={{ height: '37px' }}
                                     >
                                         Buscar
                                     </Button>
