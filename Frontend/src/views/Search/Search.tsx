@@ -50,7 +50,7 @@ export const Search = () => {
         <Form autoComplete='off'>
           <Styled.Container>
             <FormChange onChange={ values => setVehicle(null) } />
-            <InputGroup name="search" placeholder="Ingrese la placa del vehículo (ej. ECM532)" reset autoFocus format={formats.wordUpper} />
+            <InputGroup name="search" placeholder="Placa..." reset autoFocus format={formats.wordUpper} className='input-search' />
             <Button loading={loading} htmlType='submit' className='btn' type='primary'>Buscar</Button>
             <FormError />
           </Styled.Container>

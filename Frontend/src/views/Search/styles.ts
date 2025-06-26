@@ -6,6 +6,22 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    .input-search {
+        font-size: 45px;
+        height: 60px;
+        text-align: center;
+    }
+    .ico {
+        top: 10px;
+        > svg {
+            height: 40px;
+            width: 40px;
+        }
+    }
+        .btn{
+            height: 60px;
+            font-size: 20px;
+        }
 `;
 
 export const Item = styled.div`
