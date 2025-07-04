@@ -1,1 +1,5 @@
-export { ApartmentSelector } from './ApartmentSelector'
+import ApartmentSelector from './ApartmentSelector';
+
+export {
+    ApartmentSelector
+}

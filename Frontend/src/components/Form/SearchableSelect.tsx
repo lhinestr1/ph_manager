@@ -131,7 +131,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
                 type="text"
                 value={inputValue}
                 placeholder="Buscar por nombre..."
-                autoFocus
                 onChange={(e) => {
                     setInputValue(e.target.value);
                     setShowDropdown(true);

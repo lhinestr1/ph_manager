@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import Row from '../../components/Grid/Row';
 import apartmentVehicleGet from '../../services/apartmentVehicleGet';
 import { connect } from 'react-redux';
 import { PHManagerState } from '../../store';
-import { IApartment, IBuilding, IVehicle } from '../../types/common';
+import { E_roles, IApartment, IBuilding, IVehicle } from '../../types/common';
 import { ListVehicles } from './ListVehicles';
 import { vehicleDelete as vehicleDeleteService } from '../../services/vehicleDelete';
 import { Alert } from '../../components/UI/Alert';
@@ -20,6 +20,7 @@ import { CreateVehicle } from './CreateVehicle';
 import { vehiclePost, Params as ParamsVehiclePost } from '../../services/vehiclePost';
 import { AssignUser } from './AssignUser';
 import { ListTenants } from './ListTenants';
+import { CreateUser } from './CreateUser';
 
 const Container = styled.div`
     .nameApto {
@@ -165,7 +166,7 @@ const AdminApartment: React.FC<Props> = ({
                     ownerId: value.ownerId
                 })
             });
-            setApartmentSelected( prev => ({
+            setApartmentSelected(prev => ({
                 ...prev,
                 ownerName: response.payload.ownerName,
                 isInArrears: response.payload.isInArrears
@@ -196,12 +197,27 @@ const AdminApartment: React.FC<Props> = ({
     }
 
     const openAssignUser = async () => {
-        //Falta back me devulva el id del usuario propietario
         openModal({
             main: <AssignUser
                 close={modal.close}
                 userSelected={null}
+                openCreateUser={openCreateUSer}
                 setApartment={handlerSetApartment} />,
+        });
+    }
+
+    const openCreateUSer = async () => {
+        //Falta back me devulva el id del usuario propietario
+        openModal({
+            main: <CreateUser
+                buildingId={apartmentSelected.buildingId}
+                apartmentId={apartmentSelected.id}
+                roleSelected={E_roles.Propietario}
+                close={async () => {
+                    modal.close()
+                    await handlerGetApartment()
+                }}
+            />,
         });
     }
 

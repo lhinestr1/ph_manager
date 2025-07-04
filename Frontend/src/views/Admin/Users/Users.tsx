@@ -56,33 +56,13 @@ export const Users = () => {
         }
     }
 
-    const handlerSaveUser = async (user: ParamsUserPost) => {
-        try {
-            setServiceStatus({
-                status: 'loading'
-            })
-            await usersPost(user);
-            modal.close();
-            setServiceStatus({
-                status: 'init'
-            });
-            await getUsers(1);
-        } catch (e) {
-            if (e instanceof ApiError) {
-                setServiceStatus({
-                    status: 'error',
-                    error: e
-                });
-            }
-        }
-    }
+
 
     const openCreateUser = async () => {
         openModal({
             main: <CreateUser
-                loading={serviceStatus.status === 'loading'}
-                cancel={modal.close}
-                userPost={handlerSaveUser} />,
+                close={modal.close}
+                />,
             noClosable: true
         });
     }

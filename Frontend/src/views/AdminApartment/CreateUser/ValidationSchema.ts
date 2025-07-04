@@ -1,16 +1,15 @@
-import { object, string, number, StringSchema } from 'yup';
-import { rolesType } from '../../../types/common';
+import { object, string, number } from 'yup';
 
 export default object({
   firstName: string()
     .trim()
-    .required('requerido'),
+    .required('Requerido'),
   lastName: string()
     .trim()
-    .required('requerido'),
+    .required('Requerido'),
   role: string()
     .trim()
-    .required('requerido'),
+    .required('Requerido'),
   buildingSelector: string()
     .trim()
     .when('role', {
@@ -27,14 +26,14 @@ export default object({
     }),
   documentNumber: string()
     .trim()
-    .required('requerido'),
+    .required('Requerido'),
   mainPhoneNumber: number()
     .min(1111111111, 'El celular debe tener 10 dígitos')
     .max(9999999999, 'El celular debe tener 10 dígitos')
-    .typeError('Numero invalido')
-    .required('requerido'),
+    .typeError('Numero inválido')
+    .required('Requerido'),
   email: string()
     .trim()
-    .email('Correo electronico invalido')
-    .required('requerido'),
+    .email('Correo electronico inválido')
+    .required('Requerido'),
 });

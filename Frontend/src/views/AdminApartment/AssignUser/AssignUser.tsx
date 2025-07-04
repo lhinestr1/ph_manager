@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import InputSelect from '../../../components/Form/InputSelect'
 import { Formik } from 'formik'
 import useService from '../../../hooks/useService';
 import usersGet from '../../../services/usersGet';
@@ -10,9 +9,11 @@ import Row from '../../../components/Grid/Row';
 import { Button } from 'antd';
 import FormGroup from '../../../components/Form/FormGroup';
 import { SearchableSelect } from '../../../components/Form/SearchableSelect';
+import Column from '../../../components/Grid/Column';
 
 interface Props {
     close: () => void,
+    openCreateUser?: () => void,
     setApartment: (value: { isInArrears?: boolean, ownerId?: string }) => Promise<void>,
     userSelected: {
         fullname: string,
@@ -28,7 +29,8 @@ const initialValues: Props["userSelected"] = {
 export const AssignUser: React.FC<Props> = ({
     userSelected,
     setApartment,
-    close
+    close,
+    openCreateUser
 }) => {
     const [_, getUsers] = useService(usersGet);
 
@@ -58,10 +60,11 @@ export const AssignUser: React.FC<Props> = ({
                 }
             }}>
             {
-                ({ setFieldValue }) => (
+                ({ setFieldValue, values }) => (
                     <Form style={{ height: '250px' }}>
-                        <FormGroup>
-                            <Label>Seleccione el propietario</Label>
+                        <Column $justifyContent='space-between' style={{ height: '100%' }}>
+                            <FormGroup>
+                            <Label>Escriba y seleccione el nuevo propietario</Label>
                             <SearchableSelect
                                 onSelect={(value) => {
                                     setFieldValue('id', value.value);
@@ -74,9 +77,13 @@ export const AssignUser: React.FC<Props> = ({
                                 }}
                             />
                         </FormGroup>
-                        <Row $justifyContent='right'>
-                            <Button htmlType='submit' type='primary' className='btn btn-primary'>Asignar</Button>
+                        <Row $justifyContent='right' $gap={10}>
+                            <Button type='default' danger className='' onClick={close}>Cancelar</Button>
+                            <Button type='default' className='' onClick={openCreateUser}>Crear</Button>
+                            <Button htmlType='submit' type='primary' className='btn btn-primary' disabled={!values.id}>Asignar</Button>
                         </Row>
+                        </Column>
+                        
                     </Form>
                 )
             }

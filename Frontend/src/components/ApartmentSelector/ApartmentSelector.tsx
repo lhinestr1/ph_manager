@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Row from '../Grid/Row'
 import InputSelect from '../Form/InputSelect'
-import buildingGet from '../../services/buildingGet'
-import { IApartment, IBuilding } from '../../types/common'
+import { IApartment, IBuilding, IOptionSelector } from '../../types/common'
 import apartmentsGet from '../../services/apartmentsGet'
+import FormChange from '../Form/FormChange'
+import { connect } from 'react-redux'
+import { PHManagerState } from '../../store'
 
-export const ApartmentSelector: React.FC = () => {
+interface Props {
+  buildings: IOptionSelector[],
+  disabled?: boolean
+}
 
-  const [buildingSelector, setBuildingSelector] = useState([]);
-  const [apartmentSelector, setApartmentSelector] = useState([]);
+const ApartmentSelector: React.FC<Props> = ({
+  buildings = [],
+  disabled = false
+}) => {
 
-  //BUGS SE DEBE OBTENER DEL REDUCER
-  const getBuildings = async () => {
-    try {
-      const response = await buildingGet();
-      response.payload.items.sort((a: IBuilding, b: IBuilding) => a.name.localeCompare(b.name, undefined, { numeric: true }))
-      const items = response.payload.items.map((item: IBuilding) => ({
-        label: item.name,
-        value: item.id
-      }));
-      setBuildingSelector(items);
-    } catch (error) { }
-  }
+  const [apartmentSelector, setApartmentSelector] = useState([])
+  const [buildindSelected, setBuildindSelected] = useState<string>("");
 
-  //get apartments
   const getApartments = async (building_id: string) => {
     try {
-      const response = await apartmentsGet({ building_id })({
-        page: 1,
-        size: 50
-      });
-      const items = response.payload.items.map((item: IApartment) => ({
-        label: item.number,
-        value: item.id
-      }));
-      setApartmentSelector(items);
+      
+      if (buildindSelected != building_id) {
+        const response = await apartmentsGet({ building_id })({
+          page: 1,
+          size: 50
+        });
+        const items = response.payload.items.map((item: IApartment) => ({
+          label: item.number,
+          value: item.id
+        }));
+        setBuildindSelected(building_id);
+        setApartmentSelector(items);
+      }
+
     } catch (error) { }
   }
-
-  useEffect(() => {
-    (async () => await getBuildings())()
-  }, [])
 
   return (
     <Row $gap={10}>
-      <InputSelect placeholder='Torre' name='buildingSelector' options={buildingSelector} onChange={getApartments} />
-      <InputSelect placeholder='Apartamento' name='apartmentSelector' options={apartmentSelector} />
+      <InputSelect placeholder='Torre' name='buildingSelector' options={buildings} disabled={disabled} />
+      <InputSelect placeholder='Apartamento' name='apartmentSelector' options={apartmentSelector} disabled={disabled}/>
+      <FormChange onChange={v => getApartments(v.buildingSelector)} />
     </Row>
   )
 }
+
+export default connect(
+  (state: PHManagerState) => ({
+    buildings: state.buildings.map((building: IBuilding) => ({
+      label: building.name,
+      value: building.id
+    }))
+  }),
+)(ApartmentSelector);
